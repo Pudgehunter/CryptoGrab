@@ -1,0 +1,10 @@
+.cards {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin: 0px 10px 0px 10px;
+}
+/*# sourceMappingURL=main.css.map */

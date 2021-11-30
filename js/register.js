@@ -42,6 +42,7 @@ registerBtn.addEventListener("submit", e => {
             name,
             email,
             password,
+            dollar: 100000,
             isAdmin: false,
         });
     } else {

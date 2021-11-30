@@ -1,17 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CryptoGrab-login</title>
+    <!-----------------CSS--------------------->
+    <link rel="stylesheet" href="./sass/main.css">
 </head>
+
 <body>
+    <header>
+        <!--Logo-->
+        <img src="https://img.icons8.com/material-rounded/24/000000/menu--v1.png" />
+        <!--Lista de navegación-->
+        <nav>
+            <ul class="nav-area">
+                <li><p id="username"></p></li>
+                <li><p id="plata"></p></li>
+            </ul>
+        </nav>
+        <!--Botón de Iniciar/Cerrar sesión-->
+        <button class="auth menu__item--button" id="loginButton">Iniciar Sesión</button>
+        <button class="auth menu__item--button hidden" id="logoutButton">Cerrar Sesión</button>
+    </header>
     <section>
+        <!--El titulo de las monedas-->
+        <h1>Realiza tus inversiones</h1>
+        <div class="cards" id="cards">
+            <!--Bit Coin-->
+            <div class="cards__item">
+                <figure><img class="cards_image"/></figure>
+                <div class="cards__description">
+                    <h2 class="cards__name">Bit coin (BTC)</h2>
+                    <p class="cards__coin--value">Valor hoy: $$$$$</p>
+                    <button>Comprar</button>
+                    <button>Vender</button>
+                </div>
+            </div>
+            <div class="">
+                <figure></figure>
+                <div>
+                    <h2>NEO (NEO)</h2>
+                    <p>Valor hoy: $$$$$</p>
+                    <button>Comprar</button>
+                    <button>Vender</button>
+                </div>
+            </div>
+            <div class="">
+                <figure></figure>
+                <div>
+                    <h2>Binance Coin (BNB)</h2>
+                    <p>Valor hoy: $$$$$</p>
+                    <button>Comprar</button>
+                    <button>Vender</button>
+                </div>
+            </div>
+            <div class="">
+                <figure></figure>
+                <div>
+                    <h2>Litecoin (LTC)</h2>
+                    <p>Valor hoy: $$$$$</p>
+                    <button>Comprar</button>
+                    <button>Vender</button>
+                </div>
+            </div>
+            <div class="">
+                <figure></figure>
+                <div>
+                    <h2>Monero (XMR)</h2>
+                    <p>Valor hoy: $$$$$</p>
+                    <button>Comprar</button>
+                    <button>Vender</button>
+                </div>
+            </div>
+        </div>
         <div>
-            <h1>Estas en la página oficial de CryptoGrab</h1>
-            <p>Buenas</p>
+            <h1>Tus movimientos</h1>
         </div>
     </section>
+    <!-----------------JS--------------------->
+    <script src="./js/utils.js"></script>
+    <script type="module" src="./js/home.js"></script>
 </body>
+
 </html>

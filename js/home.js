@@ -1,6 +1,6 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.3.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.3.0/firebase-auth.js";
-import { getFirestore, doc, collection, getDoc, getDocs, setDoc } from "https://www.gstatic.com/firebasejs/9.3.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-auth.js";
+import { getFirestore, doc, collection, getDoc, getDocs, setDoc } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-firestore.js";
 
 //Constante para luego volverlo firebase.
 let dolar = 0;
@@ -111,7 +111,7 @@ const productTemplate = (item) => {
         tagHtml = `<img class="product__tag card__tag--down" src="./img/up.png"/>`;
     }
 
-    let coinValue = [0,0,0,0,0];
+    let coinValue = [0, 0, 0, 0, 0];
     let coinValueHtml;
     //Valido qué moneda esta hablando el card para no complicarse la vida que tiene muchas monedas.
     switch (parseInt(item.id)) {
@@ -147,7 +147,7 @@ const productTemplate = (item) => {
                     <h2 class="cards__name">${item.name}</h2>
                     <!--<p id="coinQuantity">Tienes ${item.coinQuantity}</p>-->
                     ${coinValueHtml}
-                    <p id="coinValue" class="cards__coin--value"> $ ${item.coinValue}</p>
+                    <p id="coinValue" class="cards__coin--value">Valor individual de la moneda:  $${item.coinValue}</p>
                     <!--Los botones me toco validarlo de esta manera para que sea más "profesional"-->
                     <div class="cards__buttons">
                         <div class="cards__button cards__buy">
@@ -176,7 +176,7 @@ const productTemplate = (item) => {
                                     <p class="sellQuantity">0</p>
                                     <button class="sellPlus">+</button>
                                 </div>
-                                <button id="sellCoins">Listo</button>
+                                <button class="sellCoins">Listo</button>
                             </div>
                         </div>
                          <!---->
@@ -233,7 +233,6 @@ const productTemplate = (item) => {
 
     //Acá valido la parte de suma y resta en la parte de VENDER.
     sellPlus.addEventListener("click", e => {
-        console.log(item.id);
         venderCantidad[parseInt(item.id)] += 1;
         sellQuantity.innerHTML = venderCantidad[parseInt(item.id)];
     });
@@ -294,12 +293,148 @@ const productTemplate = (item) => {
                     alert("Compraste " + comprarCantidad[4] + " de Monero por " + totalMonedaComprada + " y tienes: " + total);
                     break;
             }
+            window.location.reload();
         } else {
             alert("No tienes el dinero suficiente para comprar más monedas, reduzca la cantidad");
         }
     });
+    //los ID para comprar monedas
+    const sellCoins = card.querySelector(".sellCoins"); //<button>
 
-    const sellCoins = document.getElementById("sellCoins"); //<button>
+    //VENDER monedas
+    sellCoins.addEventListener("click", async e => {
+        switch (parseInt(item.id)) {
+            case 0:
+                if(userLogged.btc >= 1 && venderCantidad[0] <= userLogged.btc){
+                    //let resta = parseInt(userLogged) - parseInt();
+                    let btcCoinTotal = parseInt(venderCantidad[0]) * parseInt(item.coinValue);
+                    let resta = parseInt(userLogged.btc) - parseInt(venderCantidad[0]);
+                    let total = parseInt(userLogged.dollar) + btcCoinTotal;
+                    console.log(total);
+                    await setDoc(doc(db, "users", userLogged.uid), {
+                        bnb: userLogged.bnb,
+                        btc: resta,
+                        dollar: total,
+                        email: userLogged.email,
+                        isAdmin: userLogged.isAdmin,
+                        ltc: userLogged.ltc,
+                        name: userLogged.name,
+                        neo: userLogged.neo,
+                        password: userLogged.password,
+                        xmr: userLogged.xmr
+                    });
+                    window.location.reload();
+                } else {
+                    alert("Puedes que tengas menos monedas de la cantidad que quieres vender");
+                }
+                break;
+            case 1:
+                if(userLogged.neo >= 1 && venderCantidad[1] <= userLogged.neo){
+                    //let resta = parseInt(userLogged) - parseInt();
+                    let neoCoinTotal = parseInt(venderCantidad[1]) * parseInt(item.coinValue);
+                    let resta = parseInt(userLogged.neo) - parseInt(venderCantidad[1]);
+                    let total = parseInt(userLogged.dollar) + neoCoinTotal;
+                    console.log(total);
+                    await setDoc(doc(db, "users", userLogged.uid), {
+                        bnb: userLogged.bnb,
+                        btc: userLogged.btc,
+                        dollar: total,
+                        email: userLogged.email,
+                        isAdmin: userLogged.isAdmin,
+                        ltc: userLogged.ltc,
+                        name: userLogged.name,
+                        neo: resta,
+                        password: userLogged.password,
+                        xmr: userLogged.xmr
+                    });
+                    window.location.reload();
+                } else {
+                    alert("Puedes que tengas menos monedas de la cantidad que quieres vender");
+                }
+                break;
+            case 2:
+                if(userLogged.bnb >= 1 && venderCantidad[2] <= userLogged.bnb){
+                    //let resta = parseInt(userLogged) - parseInt();
+                    let bnbCoinTotal = parseInt(venderCantidad[2]) * parseInt(item.coinValue);
+                    let resta = parseInt(userLogged.bnb) - parseInt(venderCantidad[0]);
+                    let total = parseInt(userLogged.dollar) + bnbCoinTotal;
+                    console.log(total);
+                    await setDoc(doc(db, "users", userLogged.uid), {
+                        bnb: resta,
+                        btc: userLogged.btc,
+                        dollar: total,
+                        email: userLogged.email,
+                        isAdmin: userLogged.isAdmin,
+                        ltc: userLogged.ltc,
+                        name: userLogged.name,
+                        neo: userLogged.neo,
+                        password: userLogged.password,
+                        xmr: userLogged.xmr
+                    });
+                    window.location.reload();
+                } else {
+                    alert("Puedes que tengas menos monedas de la cantidad que quieres vender");
+                }
+                break;
+            case 3:
+                if(userLogged.ltc >= 1 && venderCantidad[3] <= userLogged.ltc){
+                    //let resta = parseInt(userLogged) - parseInt();
+                    let ltcCoinTotal = parseInt(venderCantidad[3]) * parseInt(item.coinValue);
+                    let resta = parseInt(userLogged.ltc) - parseInt(venderCantidad[3]);
+                    let total = parseInt(userLogged.dollar) + ltcCoinTotal;
+                    console.log(total);
+                    await setDoc(doc(db, "users", userLogged.uid), {
+                        bnb: userLogged.bnb,
+                        btc: userLogged.btc,
+                        dollar: total,
+                        email: userLogged.email,
+                        isAdmin: userLogged.isAdmin,
+                        ltc: resta,
+                        name: userLogged.name,
+                        neo: userLogged.neo,
+                        password: userLogged.password,
+                        xmr: userLogged.xmr
+                    });
+                    window.location.reload();
+                } else {
+                    alert("Puedes que tengas menos monedas de la cantidad que quieres vender");
+                }
+                break;
+            case 4:
+                if(userLogged.xmr >= 1 && venderCantidad[4] <= userLogged.xmr){
+                    //let resta = parseInt(userLogged) - parseInt();
+                    let xmrCoinTotal = parseInt(venderCantidad[4]) * parseInt(item.coinValue);
+                    let resta = parseInt(userLogged.xmr) - parseInt(venderCantidad[4]);
+                    let total = parseInt(userLogged.dollar) + xmrCoinTotal;
+                    console.log(total);
+                    await setDoc(doc(db, "users", userLogged.uid), {
+                        bnb: userLogged.bnb,
+                        btc: userLogged.btc,
+                        dollar: total,
+                        email: userLogged.email,
+                        isAdmin: userLogged.isAdmin,
+                        ltc: userLogged.ltc,
+                        name: userLogged.name,
+                        neo: userLogged.neo,
+                        password: userLogged.password,
+                        xmr: resta
+                    });
+                    window.location.reload();
+                } else {
+                    alert("Puedes que tengas menos monedas de la cantidad que quieres vender");
+                }
+                break;
+        }
+        // if (cantidadMonedaBitCoin >= 1 && venderCantidad <= cantidadMonedaBitCoin) {
+        //     dolar = dolar + monedaBitCoin * venderCantidad;
+        //     cantidadMonedaBitCoin = cantidadMonedaBitCoin - venderCantidad;
+        //     plata.innerHTML = dolar;
+        //     coinQuantity.innerHTML = "Tienes: " + cantidadMonedaBitCoin;
+        //     alert("Al convertir la moneda de Bitcoins tienes: " + dolar);
+        // } else {
+        //     alert("Tienes más valor de la moneda");
+        // }
+    });
 
 };
 

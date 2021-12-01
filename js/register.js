@@ -43,6 +43,11 @@ registerBtn.addEventListener("submit", e => {
             email,
             password,
             dollar: 100000,
+            btc: 0,
+            neo: 0,
+            bnb: 0,
+            ltc: 0,
+            xmr: 0,
             isAdmin: false,
         });
     } else {

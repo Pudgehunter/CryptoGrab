@@ -3,15 +3,18 @@ import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/fi
 import { getFirestore, doc, collection, getDoc, getDocs, setDoc } from "https://www.gstatic.com/firebasejs/9.3.0/firebase-firestore.js";
 
 //Constante para luego volverlo firebase.
-let dolar = 300000;
-let monedaBitCoin = 57000;
+let dolar = 0;
+let monedaBitCoin = 0;
 let totalMonedaComprada = 0;
 let cantidadMonedaBitCoin = 0;
 
+//Datos de usuario
+let userLogged = {}
+
 
 //ATRIBUTOS DE HOME.JS
-let comprarCantidad = [1, 1, 1, 1, 1]; //Esta es el variable que ayuda a contar las monedas de "comprar" (PREDETERMINADAS AL INICIO);
-let venderCantidad = [1, 1, 1, 1, 1]; //Esta es el variable que ayuda a contar las monedas de "vender" (PREDETERMINADAS AL INICIO);
+let comprarCantidad = [0, 0, 0, 0, 0]; //Esta es el variable que ayuda a contar las monedas de "comprar" (PREDETERMINADAS AL INICIO);
+let venderCantidad = [0, 0, 0, 0, 0]; //Esta es el variable que ayuda a contar las monedas de "vender" (PREDETERMINADAS AL INICIO);
 
 //Atributos de firebase
 const app = initializeApp(firebaseConfig);
@@ -128,10 +131,10 @@ const productTemplate = (item) => {
                                 <p>¿Cuantas deseas comprar?</p>
                                 <div class="cards__drop--item">
                                     <button class="buyMinus">-</button>
-                                    <p class="buyQuantity">1</p>
+                                    <p class="buyQuantity">0</p>
                                     <button class="buyPlus">+</button>
                                 </div>
-                                <button id="buyCoins">Listo</button>
+                                <button class="buyCoins">Listo</button>
                             </div>
                         </div>
                         <!---->
@@ -143,7 +146,7 @@ const productTemplate = (item) => {
                                 <p>¿Cuantas deseas vender?</p>
                                 <div class="cards__drop--item">
                                     <button class="sellMinus">-</button>
-                                    <p class="sellQuantity">1</p>
+                                    <p class="sellQuantity">0</p>
                                     <button class="sellPlus">+</button>
                                 </div>
                                 <button id="sellCoins">Listo</button>
@@ -182,7 +185,7 @@ const productTemplate = (item) => {
     const buyPlus = card.querySelector(".buyPlus");
     const buyMinus = card.querySelector(".buyMinus"); //<button>
     const buyQuantity = card.querySelector(".buyQuantity"); //<p>
-    console.log(parseInt(item.id));
+
     //Acá valido la parte de suma y resta en la parte de COMPRAR.
     buyPlus.addEventListener("click", e => {
         comprarCantidad[parseInt(item.id)] += 1;
@@ -190,7 +193,7 @@ const productTemplate = (item) => {
     });
 
     buyMinus.addEventListener("click", e => {
-        if (comprarCantidad[parseInt(item.id)] > 1) {
+        if (comprarCantidad[parseInt(item.id)] > 0) {
             comprarCantidad[parseInt(item.id)] -= 1;
         }
         buyQuantity.innerHTML = comprarCantidad[parseInt(item.id)];
@@ -203,19 +206,72 @@ const productTemplate = (item) => {
 
     //Acá valido la parte de suma y resta en la parte de VENDER.
     sellPlus.addEventListener("click", e => {
+        console.log(item.id);
         venderCantidad[parseInt(item.id)] += 1;
         sellQuantity.innerHTML = venderCantidad[parseInt(item.id)];
     });
 
     sellMinus.addEventListener("click", e => {
-        if (venderCantidad[parseInt(item.id)] > 1) {
+        if (venderCantidad[parseInt(item.id)] > 0) {
             venderCantidad[parseInt(item.id)] -= 1;
         }
         sellQuantity.innerHTML = venderCantidad[parseInt(item.id)];
     });
 
     //los ID para comprar monedas
-    const buyCoins = document.getElementById("buyCoins"); //<button>
+    const buyCoins = card.querySelector(".buyCoins"); //<button>
+
+    //COMPRAR monedas
+    buyCoins.addEventListener("click", async e => {
+        e.preventDefault();
+        totalMonedaComprada = parseInt(item.coinValue) * comprarCantidad[parseInt(item.id)];
+        console.log("esto es: valor de moneda: " + item.coinValue + "* cantidad: " + comprarCantidad[parseInt(item.id)] + " = " + totalMonedaComprada);
+
+        if (totalMonedaComprada < parseInt(userLogged.dollar)) {
+            console.log("funciona");
+            let total = parseInt(userLogged.dollar) - totalMonedaComprada;
+            let btcCoins = userLogged.btc + comprarCantidad[0];
+            let neoCoins = userLogged.neo + comprarCantidad[1];
+            let bnbCoins = userLogged.bnb + comprarCantidad[2];
+            let ltcCoins = userLogged.ltc + comprarCantidad[3];
+            let xmrCoins = userLogged.xmr + comprarCantidad[4];
+
+            await setDoc(doc(db, "users", userLogged.uid), {
+                bnb: bnbCoins,
+                btc: btcCoins,
+                dollar: total,
+                email: userLogged.email,
+                isAdmin: userLogged.isAdmin,
+                ltc: ltcCoins,
+                name: userLogged.name,
+                neo: neoCoins,
+                password: userLogged.password,
+                xmr: xmrCoins
+            });
+
+            //Feedbacks al usuario.
+            switch (parseInt(item.id)) {
+                case 0:
+                    alert("Compraste " + comprarCantidad[0] + " de bitcoins por " + totalMonedaComprada + " y tienes: " + total);
+                    break;
+                case 1:
+                    alert("Compraste " + comprarCantidad[1] + " de NEO por " + totalMonedaComprada + " y tienes: " + total);
+                    break;
+                case 2:
+                    alert("Compraste " + comprarCantidad[2] + " de Binance Coin por " + totalMonedaComprada + " y tienes: " + total);
+                    break;
+                case 3:
+                    alert("Compraste " + comprarCantidad[3] + " de Litecoin por " + totalMonedaComprada + " y tienes: " + total);
+                    break;
+                case 4:
+                    alert("Compraste " + comprarCantidad[4] + " de Monero por " + totalMonedaComprada + " y tienes: " + total);
+                    break;
+            }
+        } else {
+            alert("No tienes el dinero suficiente para comprar más monedas, reduzca la cantidad");
+        }
+    });
+
     const sellCoins = document.getElementById("sellCoins"); //<button>
 
 };
@@ -228,6 +284,13 @@ onAuthStateChanged(auth, async (user) => {
         console.log(userInfo);
         username.innerHTML = "Bienvenido " + userInfo.name;
         plata.innerHTML = "Tu plata es: $" + userInfo.dollar;
+
+        //Para poder usar los datos del usuario en otro lados.
+        userLogged = {
+            ...user,
+            ...userInfo
+        };
+
     } else {
         username.innerHTML = ""
     }

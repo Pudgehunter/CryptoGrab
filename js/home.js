@@ -10,8 +10,8 @@ let cantidadMonedaBitCoin = 0;
 
 
 //ATRIBUTOS DE HOME.JS
-let comprarCantidad = 1; //Esta es el variable que ayuda a contar las monedas de "comprar" (PREDETERMINADAS AL INICIO);
-let venderCantidad = 1; //Esta es el variable que ayuda a contar las monedas de "vender" (PREDETERMINADAS AL INICIO);
+let comprarCantidad = [1, 1, 1, 1, 1]; //Esta es el variable que ayuda a contar las monedas de "comprar" (PREDETERMINADAS AL INICIO);
+let venderCantidad = [1, 1, 1, 1, 1]; //Esta es el variable que ayuda a contar las monedas de "vender" (PREDETERMINADAS AL INICIO);
 
 //Atributos de firebase
 const app = initializeApp(firebaseConfig);
@@ -31,26 +31,6 @@ const movimientos = document.getElementById("movimientos");
 
 //div del complemento
 const cardSection = document.getElementById("cards");
-
-//Creando los ID de los buy, para que funcionen cuando lo toque y salga su drop.
-const buyButton = document.getElementById("buyButton");
-const buyDrop = document.getElementById("buyDrop");
-const sellButton = document.getElementById("sellButton");
-const sellDrop = document.getElementById("sellDrop");
-
-//los ID para que funcionen la parte de cantidad (COMPRAR)
-const buyPlus = document.getElementById("buyPlus"); //<button>
-const buyMinus = document.getElementById("buyMinus"); //<button>
-const buyQuantity = document.getElementById("buyQuantity"); //<p>
-
-//los ID para que funcionen la parte de cantidad (VENDER)
-const sellPlus = document.getElementById("sellPlus"); //<button>
-const sellMinus = document.getElementById("sellMinus"); //<button>
-const sellQuantity = document.getElementById("sellQuantity"); //<p>
-
-//los ID para comprar monedas
-const buyCoins = document.getElementById("buyCoins"); //<button>
-const sellCoins = document.getElementById("sellCoins"); //<button>
 
 //Recibir datos del firebase del usuario que esta loggeado
 const getUserInfo = async (userId) => {
@@ -142,14 +122,14 @@ const productTemplate = (item) => {
                     <div class="cards__buttons">
                         <div class="cards__button cards__buy">
                             <!--button-->
-                            <button id="buyButton">Comprar</button>
+                            <button class="buyButton">Comprar</button>
                             <!--drop-->
-                            <div id="buyDrop" class="cards__drop">
+                            <div class="buyDrop cards__drop">
                                 <p>¿Cuantas deseas comprar?</p>
                                 <div class="cards__drop--item">
-                                    <button id="buyMinus">-</button>
-                                    <p id="buyQuantity">1</p>
-                                    <button id="buyPlus">+</button>
+                                    <button class="buyMinus">-</button>
+                                    <p class="buyQuantity">1</p>
+                                    <button class="buyPlus">+</button>
                                 </div>
                                 <button id="buyCoins">Listo</button>
                             </div>
@@ -157,14 +137,14 @@ const productTemplate = (item) => {
                         <!---->
                         <div class="cards__button cards__sell">
                             <!--button-->
-                            <button id="sellButton">Vender</button>
+                            <button class="sellButton">Vender</button>
                             <!--drop-->
-                            <div id="sellDrop" class="cards__drop">
+                            <div class="sellDrop cards__drop">
                                 <p>¿Cuantas deseas vender?</p>
                                 <div class="cards__drop--item">
-                                    <button id="sellMinus">-</button>
-                                    <p id="sellQuantity">1</p>
-                                    <button id="sellPlus">+</button>
+                                    <button class="sellMinus">-</button>
+                                    <p class="sellQuantity">1</p>
+                                    <button class="sellPlus">+</button>
                                 </div>
                                 <button id="sellCoins">Listo</button>
                             </div>
@@ -179,36 +159,64 @@ const productTemplate = (item) => {
     // Agregar cada producto a nuestro contenedor
     cardSection.appendChild(card);
 
+    //LOS IDS DEL BUTTON Y TODAS LAS ID QUE HAY EN ESA VAINA
+    //Creando los Clases porque ID solo funcionan con los primeros y no juzguen porqué.
+    const buyButton = card.querySelector(".buyButton");
+    const buyDrop = card.querySelector(".buyDrop");
+    const sellButton = card.querySelector(".sellButton");
+    const sellDrop = card.querySelector(".sellDrop");
 
-    // Busco el botón del carrito en el producto (.product__cart)
-    //const productCartButton = product.querySelector(".product__cart");
+    //Aca valido para que salgan los de DROPDROPDROPDROPDROP de comprar
+    buyButton.addEventListener("click", e => {
+        buyDrop.classList.add("drop");
+        sellDrop.classList.remove("drop");
+    });
 
-    // Cuando haga click en el botón del carrito:
-    // productCartButton.addEventListener("click", e => {
+    //Aca valido para que salgan los de DROPDROPDROPDROPDROP de vender
+    sellButton.addEventListener("click", e => {
+        buyDrop.classList.remove("drop");
+        sellDrop.classList.add("drop");
+    });
 
-    //     // Evita un comportamiento por defecto
-    //     // Dirigirme a otra página (enlace - a) && Refrescar la página (form)
-    //     e.preventDefault();
+    //No supe validar para cada uno y que salga re fácil y sencillo entonces hare para cada uno
+    const buyPlus = card.querySelector(".buyPlus");
+    const buyMinus = card.querySelector(".buyMinus"); //<button>
+    const buyQuantity = card.querySelector(".buyQuantity"); //<p>
+    console.log(parseInt(item.id));
+    //Acá valido la parte de suma y resta en la parte de COMPRAR.
+    buyPlus.addEventListener("click", e => {
+        comprarCantidad[parseInt(item.id)] += 1;
+        buyQuantity.innerHTML = comprarCantidad[parseInt(item.id)];
+    });
 
-    //     const productAdded = {
-    //         id: item.id,
-    //         name: item.name,
-    //         image: item.image,
-    //         price: item.price
-    //     };
+    buyMinus.addEventListener("click", e => {
+        if (comprarCantidad[parseInt(item.id)] > 1) {
+            comprarCantidad[parseInt(item.id)] -= 1;
+        }
+        buyQuantity.innerHTML = comprarCantidad[parseInt(item.id)];
+    });
 
-    //     cart.push(productAdded);
+    //los ID para que funcionen la parte de cantidad (VENDER)
+    const sellPlus = card.querySelector(".sellPlus"); //<button>
+    const sellMinus = card.querySelector(".sellMinus"); //<button>
+    const sellQuantity = card.querySelector(".sellQuantity"); //<p>
 
-    //     if (userLogged) {
-    //         addProductsCart(cart);
-    //     }
+    //Acá valido la parte de suma y resta en la parte de VENDER.
+    sellPlus.addEventListener("click", e => {
+        venderCantidad[parseInt(item.id)] += 1;
+        sellQuantity.innerHTML = venderCantidad[parseInt(item.id)];
+    });
 
-    //     localStorage.setItem("cart", JSON.stringify(cart));
+    sellMinus.addEventListener("click", e => {
+        if (venderCantidad[parseInt(item.id)] > 1) {
+            venderCantidad[parseInt(item.id)] -= 1;
+        }
+        sellQuantity.innerHTML = venderCantidad[parseInt(item.id)];
+    });
 
-    //     // Deshabilito el botón
-    //     productCartButton.innerHTML = "Producto añadido";
-    //     productCartButton.setAttribute("disabled", true);
-    // });
+    //los ID para comprar monedas
+    const buyCoins = document.getElementById("buyCoins"); //<button>
+    const sellCoins = document.getElementById("sellCoins"); //<button>
 
 };
 

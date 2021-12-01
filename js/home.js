@@ -119,7 +119,6 @@ sellMinus.addEventListener("click", e => {
 });
 
 coinValue.innerHTML = "Valor de la moneda: " + monedaBitCoin;
-//coinQuantity.innerHTML = "Tienes: " + cantidadMonedaBitCoin;
 
 //Comprar monedas
 sellCoins.addEventListener("click", e => {

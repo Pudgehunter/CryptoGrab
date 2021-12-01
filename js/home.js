@@ -24,8 +24,9 @@ const sellButton = document.getElementById("sellButton");
 const sellDrop = document.getElementById("sellDrop");
 
 //los ID para que funcionen la parte de cantidad (COMPRAR)
-const buyPlus = document.getElementById("buyPlus");
-const buyMinus = document.getElementById("buyMinus");
+const buyPlus = document.getElementById("buyPlus"); //<button>
+const buyMinus = document.getElementById("buyMinus"); //<button>
+const buyQuantity = document.getElementById("buyQuantity"); //<p>
 
 //Recibir datos del firebase del usuario que esta loggeado
 const getUserInfo = async (userId) => {
@@ -70,7 +71,18 @@ sellButton.addEventListener("click", e => {
     sellDrop.classList.add("drop");
 });
 
+//Acá valido la parte de suma y resta en la parte de comprar.
+buyPlus.addEventListener("click", e => {
+    comprarCantidad += 1;
+    buyQuantity.innerHTML = comprarCantidad;
+});
 
+buyMinus.addEventListener("click", e => {
+    if(comprarCantidad > 1){
+        comprarCantidad -= 1;
+    }
+    buyQuantity.innerHTML = comprarCantidad;
+});
 
 //Reconocer el estado del usuario.
 onAuthStateChanged(auth, async (user) => {

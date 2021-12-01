@@ -3,7 +3,7 @@ import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/fi
 import { getFirestore, doc, collection, getDoc, getDocs, setDoc } from "https://www.gstatic.com/firebasejs/9.3.0/firebase-firestore.js";
 
 //Constante para luego volverlo firebase.
-let dolar = 100000;
+let dolar = 300000;
 let monedaBitCoin = 57000;
 let totalMonedaComprada = 0;
 let cantidadMonedaBitCoin = 0;
@@ -120,12 +120,12 @@ sellMinus.addEventListener("click", e => {
 
 coinValue.innerHTML = "Valor de la moneda: " + monedaBitCoin;
 
-//Comprar monedas
+//VENDER monedas
 sellCoins.addEventListener("click", e => {
     console.log("Vendiste una moneda");
 
     if(cantidadMonedaBitCoin >= 1 && venderCantidad <= cantidadMonedaBitCoin){
-        dolar = dolar + monedaBitCoin*cantidadMonedaBitCoin;
+        dolar = dolar + monedaBitCoin*venderCantidad;
         cantidadMonedaBitCoin = cantidadMonedaBitCoin - venderCantidad;
         plata.innerHTML = dolar;
         coinQuantity.innerHTML = "Tienes: " + cantidadMonedaBitCoin;
@@ -136,13 +136,13 @@ sellCoins.addEventListener("click", e => {
     }
 });
 
-//Comprar monedas
+//COMPRAR monedas
 buyCoins.addEventListener("click", e => {
     console.log("Compraste una moneda");
     totalMonedaComprada = monedaBitCoin*comprarCantidad;
     if(totalMonedaComprada < dolar){
         dolar = dolar - totalMonedaComprada;
-        cantidadMonedaBitCoin += 1;
+        cantidadMonedaBitCoin = cantidadMonedaBitCoin + comprarCantidad;
         plata.innerHTML = dolar;
         coinQuantity.innerHTML = "Tienes: " + cantidadMonedaBitCoin;
         movimientos.innerHTML = "Invertiste a bitCoins con un valor de: " + monedaBitCoin;

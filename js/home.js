@@ -1,16 +1,10 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-auth.js";
-import { getFirestore, doc, collection, getDoc, getDocs, setDoc } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-firestore.js";
-
-//Constante para luego volverlo firebase.
-let dolar = 0;
-let monedaBitCoin = 0;
-let totalMonedaComprada = 0;
-let cantidadMonedaBitCoin = 0;
+import { getFirestore, doc, addDoc, collection, getDoc, getDocs, setDoc } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-firestore.js";
 
 //Datos de usuario
 let userLogged = {}
-
+let mov = [];
 
 //ATRIBUTOS DE HOME.JS
 let comprarCantidad = [0, 0, 0, 0, 0]; //Esta es el variable que ayuda a contar las monedas de "comprar" (PREDETERMINADAS AL INICIO);
@@ -26,11 +20,10 @@ const loginButton = document.getElementById("loginButton");
 const logoutButton = document.getElementById("logoutButton");
 const username = document.getElementById("username");
 const plata = document.getElementById("plata");
-const coinValue = document.getElementById("coinValue");
-const coinQuantity = document.getElementById("coinQuantity");
 
 //LOS MOVIMIENTOS 
-const movimientos = document.getElementById("movimientos");
+const movimientoSection = document.getElementById("movimientos");
+const ventaMovimientosSection = document.getElementById("movimientosGanar");
 
 //div del complemento
 const cardSection = document.getElementById("cards");
@@ -69,8 +62,6 @@ loginButton.addEventListener("click", e => {
 //Tener un arreglo de cards
 let cards = [];
 
-
-
 //Lectura de firebase sobre los CARDS que estan y sus respectivos precios
 const getAllCards = async () => {
     const collectionRef = collection(db, "cards");
@@ -100,9 +91,6 @@ const productTemplate = (item) => {
     const card = document.createElement("div");
     card.className = "cards__item"; //La clase css .cards
 
-    // Seteamos el atributo href con una url dinámica, donde le pasamos el id del producto
-    card.setAttribute("href", `./product.html?id=${item.id}`);
-
     // Lógica de nuestro tag, botón de Recomendado o Más vendido
     let tagHtml;
     if (item.isUp) {
@@ -116,15 +104,15 @@ const productTemplate = (item) => {
     //Valido qué moneda esta hablando el card para no complicarse la vida que tiene muchas monedas.
     switch (parseInt(item.id)) {
         case 0:
-            coinValue[0] = coinValue[0] + userLogged.btc;
+            coinValue[0] = coinValue[0] + userLogged.dash;
             coinValueHtml = `<p id="coinQuantity">Tienes ${coinValue[0]}</p>`
             break;
         case 1:
-            coinValue[1] = coinValue[1] + userLogged.neo;
+            coinValue[1] = coinValue[1] + userLogged.sol;
             coinValueHtml = `<p id="coinQuantity">Tienes ${coinValue[1]}</p>`
             break;
         case 2:
-            coinValue[2] = coinValue[2] + userLogged.bnb;
+            coinValue[2] = coinValue[2] + userLogged.dcr;
             coinValueHtml = `<p id="coinQuantity">Tienes ${coinValue[2]}</p>`
             break;
         case 3:
@@ -145,7 +133,6 @@ const productTemplate = (item) => {
                 <!--Descripciónes sobre lo que tiene la carta-->
                 <div class="cards__description">
                     <h2 class="cards__name">${item.name}</h2>
-                    <!--<p id="coinQuantity">Tienes ${item.coinQuantity}</p>-->
                     ${coinValueHtml}
                     <p id="coinValue" class="cards__coin--value">Valor individual de la moneda:  $${item.coinValue}</p>
                     <!--Los botones me toco validarlo de esta manera para que sea más "profesional"-->
@@ -249,55 +236,130 @@ const productTemplate = (item) => {
 
     //COMPRAR monedas
     buyCoins.addEventListener("click", async e => {
-        //e.preventDefault();
-        totalMonedaComprada = parseInt(item.coinValue) * comprarCantidad[parseInt(item.id)];
-        console.log("esto es: valor de moneda: " + item.coinValue + "* cantidad: " + comprarCantidad[parseInt(item.id)] + " = " + totalMonedaComprada);
-
-        if (totalMonedaComprada < parseInt(userLogged.dollar)) {
-            console.log("funciona");
-            let total = parseInt(userLogged.dollar) - totalMonedaComprada;
-            let btcCoins = userLogged.btc + comprarCantidad[0];
-            let neoCoins = userLogged.neo + comprarCantidad[1];
-            let bnbCoins = userLogged.bnb + comprarCantidad[2];
-            let ltcCoins = userLogged.ltc + comprarCantidad[3];
-            let xmrCoins = userLogged.xmr + comprarCantidad[4];
-
-            await setDoc(doc(db, "users", userLogged.uid), {
-                bnb: bnbCoins,
-                btc: btcCoins,
-                dollar: total,
-                email: userLogged.email,
-                isAdmin: userLogged.isAdmin,
-                ltc: ltcCoins,
-                name: userLogged.name,
-                neo: neoCoins,
-                password: userLogged.password,
-                xmr: xmrCoins
-            });
-
-            //Feedbacks al usuario.
-            switch (parseInt(item.id)) {
-                case 0:
-                    alert("Compraste " + comprarCantidad[0] + " de bitcoins por " + totalMonedaComprada + " y tienes: " + total);
-                    break;
-                case 1:
-                    alert("Compraste " + comprarCantidad[1] + " de NEO por " + totalMonedaComprada + " y tienes: " + total);
-                    break;
-                case 2:
-                    alert("Compraste " + comprarCantidad[2] + " de Binance Coin por " + totalMonedaComprada + " y tienes: " + total);
-                    break;
-                case 3:
-                    alert("Compraste " + comprarCantidad[3] + " de Litecoin por " + totalMonedaComprada + " y tienes: " + total);
-                    break;
-                case 4:
-                    alert("Compraste " + comprarCantidad[4] + " de Monero por " + totalMonedaComprada + " y tienes: " + total);
-                    break;
-            }
-            window.location.reload();
-        } else {
-            alert("No tienes el dinero suficiente para comprar más monedas, reduzca la cantidad");
+        let totalMonedaComprada = parseInt(item.coinValue) * comprarCantidad[parseInt(item.id)];
+        switch (parseInt(item.id)) {
+            //DASH CRIPTOMONEDA
+            case 0:
+                if (totalMonedaComprada < parseInt(userLogged.dollar)) {
+                    let total = parseInt(userLogged.dollar) - totalMonedaComprada;
+                    let plus = parseInt(userLogged.dash) + comprarCantidad[0];
+                    await setDoc(doc(db, "users", userLogged.uid), {
+                        dcr: userLogged.dcr,
+                        dash: plus,
+                        dollar: total,
+                        email: userLogged.email,
+                        isAdmin: userLogged.isAdmin,
+                        ltc: userLogged.ltc,
+                        name: userLogged.name,
+                        sol: userLogged.sol,
+                        password: userLogged.password,
+                        xmr: userLogged.xmr
+                    });
+                    createMov(totalMonedaComprada, item.name, plus, userLogged.sol, userLogged.dcr, userLogged.ltc, userLogged.xmr);
+                    alert("Compraste " + comprarCantidad[0] + " de " + item.name + " por " + totalMonedaComprada + " y tienes: " + total);
+                    window.location.reload();
+                } else {
+                    alert("No tienes el dinero suficiente para comprar más monedas, reduzca la cantidad");
+                }
+                break;
+            case 1:
+                if (totalMonedaComprada < parseInt(userLogged.dollar)) {
+                    //let totalMonedaComprada = parseInt(item.coinValue) * comprarCantidad[1];
+                    let total = parseInt(userLogged.dollar) - totalMonedaComprada;
+                    let plus = parseInt(userLogged.sol) + comprarCantidad[1];
+                    await setDoc(doc(db, "users", userLogged.uid), {
+                        dcr: userLogged.dcr,
+                        dash: userLogged.dash,
+                        dollar: total,
+                        email: userLogged.email,
+                        isAdmin: userLogged.isAdmin,
+                        ltc: userLogged.ltc,
+                        name: userLogged.name,
+                        sol: plus,
+                        password: userLogged.password,
+                        xmr: userLogged.xmr
+                    });
+                    createMov(totalMonedaComprada, item.name, userLogged.dash, plus, userLogged.dcr, userLogged.ltc, userLogged.xmr);
+                    alert("Compraste " + comprarCantidad[1] + " de " + item.name + " por " + totalMonedaComprada + " y tienes: " + total);
+                    window.location.reload();
+                } else {
+                    alert("No tienes el dinero suficiente para comprar más monedas, reduzca la cantidad");
+                }
+                break;
+            case 2:
+                if (totalMonedaComprada < parseInt(userLogged.dollar)) {
+                    //let totalMonedaComprada = parseInt(item.coinValue) * comprarCantidad[2];
+                    let total = parseInt(userLogged.dollar) - totalMonedaComprada;
+                    let plus = parseInt(userLogged.dcr) + comprarCantidad[2];
+                    await setDoc(doc(db, "users", userLogged.uid), {
+                        dcr: plus,
+                        dash: userLogged.dash,
+                        dollar: total,
+                        email: userLogged.email,
+                        isAdmin: userLogged.isAdmin,
+                        ltc: userLogged.ltc,
+                        name: userLogged.name,
+                        sol: userLogged.sol,
+                        password: userLogged.password,
+                        xmr: userLogged.xmr
+                    });
+                    createMov(totalMonedaComprada, item.name, userLogged.dash, userLogged.sol, plus, userLogged.ltc, userLogged.xmr);
+                    alert("Compraste " + comprarCantidad[2] + " de " + item.name + " por " + totalMonedaComprada + " y tienes: " + total);
+                    window.location.reload();
+                } else {
+                    alert("No tienes el dinero suficiente para comprar más monedas, reduzca la cantidad");
+                }
+                break;
+            case 3:
+                if (totalMonedaComprada < parseInt(userLogged.dollar)) {
+                    let total = parseInt(userLogged.dollar) - totalMonedaComprada;
+                    let plus = parseInt(userLogged.ltc) + comprarCantidad[3];
+                    await setDoc(doc(db, "users", userLogged.uid), {
+                        dcr: userLogged.dcr,
+                        dash: userLogged.dash,
+                        dollar: total,
+                        email: userLogged.email,
+                        isAdmin: userLogged.isAdmin,
+                        ltc: plus,
+                        name: userLogged.name,
+                        sol: userLogged.sol,
+                        password: userLogged.password,
+                        xmr: userLogged.xmr
+                    });
+                    createMov(totalMonedaComprada, item.name, userLogged.dash, userLogged.sol, userLogged.dcr, plus, userLogged.xmr);
+                    alert("Compraste " + comprarCantidad[3] + " de " + item.name + " por " + totalMonedaComprada + " y tienes: " + total);
+                    window.location.reload();
+                } else {
+                    alert("No tienes el dinero suficiente para comprar más monedas, reduzca la cantidad");
+                }
+                break;
+            case 4:
+                if (totalMonedaComprada < parseInt(userLogged.dollar)) {
+                    //let totalMonedaComprada = parseInt(item.coinValue) * comprarCantidad[4];
+                    let total = parseInt(userLogged.dollar) - totalMonedaComprada;
+                    let plus = parseInt(userLogged.xmr) + comprarCantidad[4];
+                    await setDoc(doc(db, "users", userLogged.uid), {
+                        dcr: userLogged.dcr,
+                        dash: userLogged.dash,
+                        dollar: total,
+                        email: userLogged.email,
+                        isAdmin: userLogged.isAdmin,
+                        ltc: userLogged.ltc,
+                        name: userLogged.name,
+                        sol: userLogged.sol,
+                        password: userLogged.password,
+                        xmr: plus
+                    });
+                    createMov(totalMonedaComprada, item.name, userLogged.dash, userLogged.sol, userLogged.dcr, userLogged.ltc, plus);
+                    alert("Compraste " + comprarCantidad[4] + " de " + item.name + " por " + totalMonedaComprada + " y tienes: " + total);
+                    window.location.reload();
+                } else {
+                    alert("No tienes el dinero suficiente para comprar más monedas, reduzca la cantidad");
+                }
+                break;
         }
     });
+
     //los ID para comprar monedas
     const sellCoins = card.querySelector(".sellCoins"); //<button>
 
@@ -305,139 +367,239 @@ const productTemplate = (item) => {
     sellCoins.addEventListener("click", async e => {
         switch (parseInt(item.id)) {
             case 0:
-                if(userLogged.btc >= 1 && venderCantidad[0] <= userLogged.btc){
-                    //let resta = parseInt(userLogged) - parseInt();
-                    let btcCoinTotal = parseInt(venderCantidad[0]) * parseInt(item.coinValue);
-                    let resta = parseInt(userLogged.btc) - parseInt(venderCantidad[0]);
-                    let total = parseInt(userLogged.dollar) + btcCoinTotal;
+                if (userLogged.dash >= 1 && venderCantidad[0] <= userLogged.dash) {
+                    let dashCoinTotal = parseInt(venderCantidad[0]) * parseInt(item.coinValue);
+                    let resta = parseInt(userLogged.dash) - parseInt(venderCantidad[0]);
+                    let total = parseInt(userLogged.dollar) + dashCoinTotal;
                     console.log(total);
                     await setDoc(doc(db, "users", userLogged.uid), {
-                        bnb: userLogged.bnb,
-                        btc: resta,
+                        dcr: userLogged.dcr,
+                        dash: resta,
                         dollar: total,
                         email: userLogged.email,
                         isAdmin: userLogged.isAdmin,
                         ltc: userLogged.ltc,
                         name: userLogged.name,
-                        neo: userLogged.neo,
+                        sol: userLogged.sol,
                         password: userLogged.password,
                         xmr: userLogged.xmr
                     });
+                    createMovGanar(dashCoinTotal, item.name, resta, userLogged.sol, userLogged.dcr, userLogged.ltc, userLogged.xmr);
+                    alert("Vendiste " + venderCantidad[0] + " de " + item.name + " por " + dashCoinTotal + " y tienes: " + total);
                     window.location.reload();
                 } else {
                     alert("Puedes que tengas menos monedas de la cantidad que quieres vender");
                 }
                 break;
             case 1:
-                if(userLogged.neo >= 1 && venderCantidad[1] <= userLogged.neo){
+                if (userLogged.sol >= 1 && venderCantidad[1] <= userLogged.sol) {
                     //let resta = parseInt(userLogged) - parseInt();
-                    let neoCoinTotal = parseInt(venderCantidad[1]) * parseInt(item.coinValue);
-                    let resta = parseInt(userLogged.neo) - parseInt(venderCantidad[1]);
-                    let total = parseInt(userLogged.dollar) + neoCoinTotal;
+                    let solCoinTotal = parseInt(venderCantidad[1]) * parseInt(item.coinValue);
+                    let resta = parseInt(userLogged.sol) - parseInt(venderCantidad[1]);
+                    let total = parseInt(userLogged.dollar) + solCoinTotal;
                     console.log(total);
                     await setDoc(doc(db, "users", userLogged.uid), {
-                        bnb: userLogged.bnb,
-                        btc: userLogged.btc,
+                        dcr: userLogged.dcr,
+                        dash: userLogged.dash,
                         dollar: total,
                         email: userLogged.email,
                         isAdmin: userLogged.isAdmin,
                         ltc: userLogged.ltc,
                         name: userLogged.name,
-                        neo: resta,
+                        sol: resta,
                         password: userLogged.password,
                         xmr: userLogged.xmr
                     });
+                    createMovGanar(solCoinTotal, item.name, userLogged.dash, resta, userLogged.dcr, userLogged.ltc, userLogged.xmr);
+                    alert("Vendiste " + venderCantidad[1] + " de " + item.name + " por " + solCoinTotal + " y tienes: " + total);
                     window.location.reload();
                 } else {
                     alert("Puedes que tengas menos monedas de la cantidad que quieres vender");
                 }
                 break;
             case 2:
-                if(userLogged.bnb >= 1 && venderCantidad[2] <= userLogged.bnb){
-                    //let resta = parseInt(userLogged) - parseInt();
-                    let bnbCoinTotal = parseInt(venderCantidad[2]) * parseInt(item.coinValue);
-                    let resta = parseInt(userLogged.bnb) - parseInt(venderCantidad[0]);
-                    let total = parseInt(userLogged.dollar) + bnbCoinTotal;
+                if (userLogged.dcr >= 1 && venderCantidad[2] <= userLogged.dcr) {
+                    let dcrCoinTotal = parseInt(venderCantidad[2]) * parseInt(item.coinValue);
+                    let resta = parseInt(userLogged.dcr) - parseInt(venderCantidad[0]);
+                    let total = parseInt(userLogged.dollar) + dcrCoinTotal;
                     console.log(total);
                     await setDoc(doc(db, "users", userLogged.uid), {
-                        bnb: resta,
-                        btc: userLogged.btc,
+                        dcr: resta,
+                        dash: userLogged.dash,
                         dollar: total,
                         email: userLogged.email,
                         isAdmin: userLogged.isAdmin,
                         ltc: userLogged.ltc,
                         name: userLogged.name,
-                        neo: userLogged.neo,
+                        sol: userLogged.sol,
                         password: userLogged.password,
                         xmr: userLogged.xmr
                     });
+                    createMovGanar(dcrCoinTotal, item.name, userLogged.dash, userLogged.sol, resta, userLogged.ltc, userLogged.xmr);
+                    alert("Vendiste " + venderCantidad[2] + " de " + item.name + " por " + dcrCoinTotal + " y tienes: " + total);
                     window.location.reload();
                 } else {
                     alert("Puedes que tengas menos monedas de la cantidad que quieres vender");
                 }
                 break;
             case 3:
-                if(userLogged.ltc >= 1 && venderCantidad[3] <= userLogged.ltc){
+                if (userLogged.ltc >= 1 && venderCantidad[3] <= userLogged.ltc) {
                     //let resta = parseInt(userLogged) - parseInt();
                     let ltcCoinTotal = parseInt(venderCantidad[3]) * parseInt(item.coinValue);
                     let resta = parseInt(userLogged.ltc) - parseInt(venderCantidad[3]);
                     let total = parseInt(userLogged.dollar) + ltcCoinTotal;
                     console.log(total);
                     await setDoc(doc(db, "users", userLogged.uid), {
-                        bnb: userLogged.bnb,
-                        btc: userLogged.btc,
+                        dcr: userLogged.dcr,
+                        dash: userLogged.dash,
                         dollar: total,
                         email: userLogged.email,
                         isAdmin: userLogged.isAdmin,
                         ltc: resta,
                         name: userLogged.name,
-                        neo: userLogged.neo,
+                        sol: userLogged.sol,
                         password: userLogged.password,
                         xmr: userLogged.xmr
                     });
+                    createMovGanar(ltcCoinTotal, item.name, userLogged.dash, userLogged.sol, userLogged.dcr, resta, userLogged.xmr);
+                    alert("Vendiste " + venderCantidad[3] + " de " + item.name + " por " + ltcCoinTotal + " y tienes: " + total);
                     window.location.reload();
                 } else {
                     alert("Puedes que tengas menos monedas de la cantidad que quieres vender");
                 }
                 break;
             case 4:
-                if(userLogged.xmr >= 1 && venderCantidad[4] <= userLogged.xmr){
-                    //let resta = parseInt(userLogged) - parseInt();
+                if (userLogged.xmr >= 1 && venderCantidad[4] <= userLogged.xmr) {
                     let xmrCoinTotal = parseInt(venderCantidad[4]) * parseInt(item.coinValue);
                     let resta = parseInt(userLogged.xmr) - parseInt(venderCantidad[4]);
                     let total = parseInt(userLogged.dollar) + xmrCoinTotal;
                     console.log(total);
                     await setDoc(doc(db, "users", userLogged.uid), {
-                        bnb: userLogged.bnb,
-                        btc: userLogged.btc,
+                        dcr: userLogged.dcr,
+                        dash: userLogged.dash,
                         dollar: total,
                         email: userLogged.email,
                         isAdmin: userLogged.isAdmin,
                         ltc: userLogged.ltc,
                         name: userLogged.name,
-                        neo: userLogged.neo,
+                        sol: userLogged.sol,
                         password: userLogged.password,
                         xmr: resta
                     });
+                    createMovGanar(xmrCoinTotal, item.name, userLogged.dash, userLogged.sol, userLogged.dcr, userLogged.ltc, resta);
+                    alert("Vendiste " + venderCantidad[4] + " de " + item.name + " por " + xmrCoinTotal + " y tienes: " + total);
                     window.location.reload();
                 } else {
                     alert("Puedes que tengas menos monedas de la cantidad que quieres vender");
                 }
                 break;
         }
-        // if (cantidadMonedaBitCoin >= 1 && venderCantidad <= cantidadMonedaBitCoin) {
-        //     dolar = dolar + monedaBitCoin * venderCantidad;
-        //     cantidadMonedaBitCoin = cantidadMonedaBitCoin - venderCantidad;
-        //     plata.innerHTML = dolar;
-        //     coinQuantity.innerHTML = "Tienes: " + cantidadMonedaBitCoin;
-        //     alert("Al convertir la moneda de Bitcoins tienes: " + dolar);
-        // } else {
-        //     alert("Tienes más valor de la moneda");
-        // }
     });
 
 };
 
+//Tener un arreglo de cards
+let movimientosDocs = [];
+
+//Generar los movimientos
+const createMov = async (total, name, dash, sol, dcr, ltc, xmr) => {
+    try {
+        const movimiento = await addDoc(collection(db, "movimientos"), {
+            name: userLogged.name,
+            inversion: total,
+            nombreMoneda: name,
+            dash: dash,
+            sol: sol,
+            dcr: dcr,
+            ltc: ltc,
+            xmr: xmr
+        });
+    } catch (e) {
+        console.log(e)
+    }
+};
+
+//Lectura de firebase sobre los CARDS que estan y sus respectivos precios
+const getAllMovimientos = async () => {
+    const collectionRef = collection(db, "movimientos");
+    const { docs } = await getDocs(collectionRef);
+
+    movimientosDocs = docs.map((doc) => {
+        return {
+            ...doc.data(),
+            id: doc.id,
+        }
+    });
+    // Recorro cada uno de los 5 cartas que tengo en mi arreglo
+    movimientosDocs.forEach(movimiento => {
+        // Llamo la funcion productTemplate para cada product.
+        renderMovimiento(movimiento);
+    });
+    return movimientosDocs;
+};
+
+//Render de movimientos
+const renderMovimiento = (item) => {
+    const card = document.createElement("div");
+    card.innerHTML = `<p>${item.name} invirtió ${item.inversion} de ${item.nombreMoneda}. Dash: ${item.dash}, SOL: ${item.sol}, DCR: ${item.dcr}, LTC: ${item.ltc}, XMR: ${item.xmr}</p>`;
+
+    // Agregar cada producto a nuestro contenedor
+    movimientoSection.appendChild(card);
+}
+
+
+
+//Generar los movimientos
+const createMovGanar = async (total, name, dash, sol, dcr, ltc, xmr) => {
+    try {
+        const movimiento = await addDoc(collection(db, "movimientosGanar"), {
+            name: userLogged.name,
+            ganancias: total,
+            nombreMoneda: name,
+            dash: dash,
+            sol: sol,
+            dcr: dcr,
+            ltc: ltc,
+            xmr: xmr
+        });
+    } catch (e) {
+        console.log(e)
+    }
+};
+
+//Tener un arreglo de cards
+let movimientosGanar = [];
+
+//Lectura de firebase sobre los CARDS que estan y sus respectivos precios
+const getAllMovimientosGanar = async () => {
+    const collectionRef = collection(db, "movimientosGanar");
+    const { docs } = await getDocs(collectionRef);
+
+    movimientosGanar = docs.map((doc) => {
+        return {
+            ...doc.data(),
+            id: doc.id,
+        }
+    });
+    // Recorro cada uno de los 5 cartas que tengo en mi arreglo
+    movimientosGanar.forEach(movimiento => {
+        // Llamo la funcion productTemplate para cada product.
+        renderMovimientoGanar(movimiento);
+    });
+    return movimientosGanar;
+};
+
+//Render de movimientos
+const renderMovimientoGanar = (item) => {
+    const card = document.createElement("div");
+    card.innerHTML = `<p>${item.name} obtuvo ${item.ganancias} de ${item.nombreMoneda}. Dash: ${item.dash}, SOL: ${item.sol}, DCR: ${item.dcr}, LTC: ${item.ltc}, XMR: ${item.xmr}</p>`;
+
+    // Agregar cada producto a nuestro contenedor
+    ventaMovimientosSection.appendChild(card);
+}
+
+
+const admin = document.getElementById("admin");
 
 //Reconocer el estado del usuario.
 onAuthStateChanged(auth, async (user) => {
@@ -447,14 +609,25 @@ onAuthStateChanged(auth, async (user) => {
         username.innerHTML = "Bienvenido " + userInfo.name;
         plata.innerHTML = "Tu plata es: $" + userInfo.dollar;
 
+        if (userInfo.isAdmin == true) {
+            admin.classList.add("visible");
+            admin.classList.remove("hidden");
+        } else if (userInfo.isAdmin == false) {
+            admin.classList.remove("visible");
+        }
+
+        loginButton.classList.add("hidden");
+        logoutButton.classList.remove("hidden");
+        logoutButton.classList.add("visible");
+
         //Para poder usar los datos del usuario en otro lados.
         userLogged = {
             ...user,
             ...userInfo
         };
-
     } else {
-        username.innerHTML = ""
     }
     getAllCards();
+    getAllMovimientos();
+    getAllMovimientosGanar();
 });

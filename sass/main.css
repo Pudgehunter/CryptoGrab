@@ -37,4 +37,12 @@
 .drop {
   display: block;
 }
+
+.visible {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
 /*# sourceMappingURL=main.css.map */

@@ -1,7 +1,20 @@
 
+//Navegación de home.html
+.nav{
+    display: flex;
+    &__area{
+        display: flex;
+    }
+}
 
 .cards{
     display: flex;
     justify-content: space-between;
     margin: 0px 10px 0px 10px;
+
+    &__drop{
+        &--item{
+            display: flex;
+        }
+    }
 }

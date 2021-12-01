@@ -12,18 +12,24 @@
 
 <body>
     <header>
-        <!--Logo-->
-        <img src="https://img.icons8.com/material-rounded/24/000000/menu--v1.png" />
-        <!--Lista de navegación-->
-        <nav>
-            <ul class="nav-area">
-                <li><p id="username"></p></li>
-                <li><p id="plata"></p></li>
-            </ul>
-        </nav>
-        <!--Botón de Iniciar/Cerrar sesión-->
-        <button class="auth menu__item--button" id="loginButton">Iniciar Sesión</button>
-        <button class="auth menu__item--button hidden" id="logoutButton">Cerrar Sesión</button>
+        <div class="nav">
+            <!--Logo-->
+            <img src="https://img.icons8.com/material-rounded/24/000000/menu--v1.png" />
+            <!--Lista de navegación-->
+            <nav>
+                <ul class="nav__area">
+                    <li>
+                        <p id="username"></p>
+                    </li>
+                    <li>
+                        <p id="plata"></p>
+                    </li>
+                </ul>
+            </nav>
+            <!--Botón de Iniciar/Cerrar sesión-->
+            <button class="auth menu__item--button" id="loginButton">Iniciar Sesión</button>
+            <button class="auth menu__item--button hidden" id="logoutButton">Cerrar Sesión</button>
+        </div>
     </header>
     <section>
         <!--El titulo de las monedas-->
@@ -31,12 +37,37 @@
         <div class="cards" id="cards">
             <!--Bit Coin-->
             <div class="cards__item">
-                <figure><img class="cards_image"/></figure>
+                <!--Imagen principal de la carta-->
+                <figure><img class="cards_image" /></figure>
+                <!--Descripciónes sobre lo que tiene la carta-->
                 <div class="cards__description">
                     <h2 class="cards__name">Bit coin (BTC)</h2>
                     <p class="cards__coin--value">Valor hoy: $$$$$</p>
-                    <button>Comprar</button>
-                    <button>Vender</button>
+                    <!--Los botones me toco validarlo de esta manera para que sea más "profesional"-->
+                    <div class="cards__buttons">
+                        <div class="cards__button cards__buy">
+                            <button>Comprar</button>
+                            <div class="cards__drop">
+                                <p>¿Cuantas deseas comprar?</p>
+                                <div class="cards__drop--item">
+                                    <button>-</button>
+                                    <p>1</p>
+                                    <button>+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cards__button cards__sell">
+                            <button>Vender</button>
+                            <div class="cards__drop">
+                                <p>¿Cuantas deseas comprar?</p>
+                                <div class="cards__drop--item">
+                                    <button>-</button>
+                                    <p>1</p>
+                                    <button>+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="">

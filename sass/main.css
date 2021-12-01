@@ -1,3 +1,15 @@
+.nav {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.nav__area {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
 .cards {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -6,5 +18,11 @@
       -ms-flex-pack: justify;
           justify-content: space-between;
   margin: 0px 10px 0px 10px;
+}
+
+.cards__drop--item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 /*# sourceMappingURL=main.css.map */

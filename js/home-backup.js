@@ -83,6 +83,77 @@ loginButton.addEventListener("click", e => {
     window.location = "./index.html";
 });
 
+//Aca valido para que salgan los de DROPDROPDROPDROPDROP de comprar
+buyButton.addEventListener("click", e => {
+    buyDrop.classList.add("drop");
+    sellDrop.classList.remove("drop");
+});
+
+//Aca valido para que salgan los de DROPDROPDROPDROPDROP de vender
+sellButton.addEventListener("click", e => {
+    buyDrop.classList.remove("drop");
+    sellDrop.classList.add("drop");
+});
+
+//Acá valido la parte de suma y resta en la parte de COMPRAR.
+buyPlus.addEventListener("click", e => {
+    comprarCantidad += 1;
+    buyQuantity.innerHTML = comprarCantidad;
+});
+
+buyMinus.addEventListener("click", e => {
+    if(comprarCantidad > 1){
+        comprarCantidad -= 1;
+    }
+    buyQuantity.innerHTML = comprarCantidad;
+});
+
+//Acá valido la parte de suma y resta en la parte de VENDER.
+sellPlus.addEventListener("click", e => {
+    venderCantidad += 1;
+    sellQuantity.innerHTML = venderCantidad;
+});
+
+sellMinus.addEventListener("click", e => {
+    if(venderCantidad > 1){
+        venderCantidad -= 1;
+    }
+    sellQuantity.innerHTML = venderCantidad;
+});
+
+coinValue.innerHTML = "Valor de la moneda: " + monedaBitCoin;
+
+//VENDER monedas
+sellCoins.addEventListener("click", e => {
+    console.log("Vendiste una moneda");
+
+    if(cantidadMonedaBitCoin >= 1 && venderCantidad <= cantidadMonedaBitCoin){
+        dolar = dolar + monedaBitCoin*venderCantidad;
+        cantidadMonedaBitCoin = cantidadMonedaBitCoin - venderCantidad;
+        plata.innerHTML = dolar;
+        coinQuantity.innerHTML = "Tienes: " + cantidadMonedaBitCoin;
+        alert("Al convertir la moneda de Bitcoins tienes: " + dolar);
+    } else {
+        alert("Tienes más valor de la moneda");
+    }
+});
+
+//COMPRAR monedas
+buyCoins.addEventListener("click", e => {
+    console.log("Compraste una moneda");
+    totalMonedaComprada = monedaBitCoin*comprarCantidad;
+    if(totalMonedaComprada < dolar){
+        dolar = dolar - totalMonedaComprada;
+        cantidadMonedaBitCoin = cantidadMonedaBitCoin + comprarCantidad;
+        plata.innerHTML = dolar;
+        coinQuantity.innerHTML = "Tienes: " + cantidadMonedaBitCoin;
+        movimientos.innerHTML = "Invertiste a bitCoins con un valor de: " + monedaBitCoin;
+        alert("Compraste " + comprarCantidad + " de bitCoins y tienes en total de dinero: " + dolar);
+    } else {
+        alert("No tienes el dinero suficiente para comprar más monedas, reduzca la cantidad");
+    }
+});
+
 //Tener un arreglo de cards
 let cards = [];
 
@@ -132,12 +203,12 @@ const productTemplate = (item) => {
     card.innerHTML = `
     <div class="cards__item">
                 <!--Imagen principal de la carta-->
-                <figure><img class="cards__image" src="${item.image}"/></figure>
+                <figure><img class="cards_image" /></figure>
                 <!--Descripciónes sobre lo que tiene la carta-->
                 <div class="cards__description">
-                    <h2 class="cards__name">${item.name}</h2>
-                    <p id="coinQuantity">Tienes ${item.coinQuantity}</p>
-                    <p id="coinValue" class="cards__coin--value"> $ ${item.coinValue}</p>
+                    <h2 class="cards__name">Bitcoin (BTC)</h2>
+                    <p id="coinQuantity">Tienes 0</p>
+                    <p id="coinValue" class="cards__coin--value"></p>
                     <!--Los botones me toco validarlo de esta manera para que sea más "profesional"-->
                     <div class="cards__buttons">
                         <div class="cards__button cards__buy">

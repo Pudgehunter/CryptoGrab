@@ -30,6 +30,10 @@
   display: flex;
 }
 
+.cards__image {
+  width: 100px;
+}
+
 .drop {
   display: block;
 }

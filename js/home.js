@@ -72,7 +72,7 @@ let cards = [];
 
 
 //Lectura de firebase sobre los CARDS que estan y sus respectivos precios
-const getAllProducts = async () => {
+const getAllCards = async () => {
     const collectionRef = collection(db, "cards");
     const { docs } = await getDocs(collectionRef);
 
@@ -111,6 +111,32 @@ const productTemplate = (item) => {
         tagHtml = `<img class="product__tag card__tag--down" src="./img/up.png"/>`;
     }
 
+    let coinValue = [0,0,0,0,0];
+    let coinValueHtml;
+    //Valido qué moneda esta hablando el card para no complicarse la vida que tiene muchas monedas.
+    switch (parseInt(item.id)) {
+        case 0:
+            coinValue[0] = coinValue[0] + userLogged.btc;
+            coinValueHtml = `<p id="coinQuantity">Tienes ${coinValue[0]}</p>`
+            break;
+        case 1:
+            coinValue[1] = coinValue[1] + userLogged.neo;
+            coinValueHtml = `<p id="coinQuantity">Tienes ${coinValue[1]}</p>`
+            break;
+        case 2:
+            coinValue[2] = coinValue[2] + userLogged.bnb;
+            coinValueHtml = `<p id="coinQuantity">Tienes ${coinValue[2]}</p>`
+            break;
+        case 3:
+            coinValue[3] = coinValue[3] + userLogged.ltc;
+            coinValueHtml = `<p id="coinQuantity">Tienes ${coinValue[3]}</p>`
+            break;
+        case 4:
+            coinValue[4] = coinValue[4] + userLogged.xmr;
+            coinValueHtml = `<p id="coinQuantity">Tienes ${coinValue[4]}</p>`
+            break;
+    }
+
     // Añadir el HTML a nuestro elemento product.
     card.innerHTML = `
     <div class="cards__item">
@@ -119,7 +145,8 @@ const productTemplate = (item) => {
                 <!--Descripciónes sobre lo que tiene la carta-->
                 <div class="cards__description">
                     <h2 class="cards__name">${item.name}</h2>
-                    <p id="coinQuantity">Tienes ${item.coinQuantity}</p>
+                    <!--<p id="coinQuantity">Tienes ${item.coinQuantity}</p>-->
+                    ${coinValueHtml}
                     <p id="coinValue" class="cards__coin--value"> $ ${item.coinValue}</p>
                     <!--Los botones me toco validarlo de esta manera para que sea más "profesional"-->
                     <div class="cards__buttons">
@@ -223,7 +250,7 @@ const productTemplate = (item) => {
 
     //COMPRAR monedas
     buyCoins.addEventListener("click", async e => {
-        e.preventDefault();
+        //e.preventDefault();
         totalMonedaComprada = parseInt(item.coinValue) * comprarCantidad[parseInt(item.id)];
         console.log("esto es: valor de moneda: " + item.coinValue + "* cantidad: " + comprarCantidad[parseInt(item.id)] + " = " + totalMonedaComprada);
 
@@ -294,5 +321,5 @@ onAuthStateChanged(auth, async (user) => {
     } else {
         username.innerHTML = ""
     }
-    getAllProducts();
+    getAllCards();
 });

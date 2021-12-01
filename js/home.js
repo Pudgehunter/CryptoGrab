@@ -2,6 +2,13 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.3.0/firebase
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.3.0/firebase-auth.js";
 import { getFirestore, doc, collection, getDoc, getDocs, setDoc } from "https://www.gstatic.com/firebasejs/9.3.0/firebase-firestore.js";
 
+//Constante para luego volverlo firebase.
+let dolar = 100000;
+let monedaBitCoin = 57000;
+let totalMonedaComprada = 0;
+let cantidadMonedaBitCoin = 0;
+
+
 //ATRIBUTOS DE HOME.JS
 let comprarCantidad = 1; //Esta es el variable que ayuda a contar las monedas de "comprar" (PREDETERMINADAS AL INICIO);
 let venderCantidad = 1; //Esta es el variable que ayuda a contar las monedas de "vender" (PREDETERMINADAS AL INICIO);
@@ -16,6 +23,11 @@ const loginButton = document.getElementById("loginButton");
 const logoutButton = document.getElementById("logoutButton");
 const username = document.getElementById("username");
 const plata = document.getElementById("plata");
+const coinValue = document.getElementById("coinValue");
+const coinQuantity = document.getElementById("coinQuantity");
+
+//LOS MOVIMIENTOS 
+const movimientos = document.getElementById("movimientos");
 
 //Creando los ID de los buy, para que funcionen cuando lo toque y salga su drop.
 const buyButton = document.getElementById("buyButton");
@@ -27,6 +39,15 @@ const sellDrop = document.getElementById("sellDrop");
 const buyPlus = document.getElementById("buyPlus"); //<button>
 const buyMinus = document.getElementById("buyMinus"); //<button>
 const buyQuantity = document.getElementById("buyQuantity"); //<p>
+
+//los ID para que funcionen la parte de cantidad (VENDER)
+const sellPlus = document.getElementById("sellPlus"); //<button>
+const sellMinus = document.getElementById("sellMinus"); //<button>
+const sellQuantity = document.getElementById("sellQuantity"); //<p>
+
+//los ID para comprar monedas
+const buyCoins = document.getElementById("buyCoins"); //<button>
+const sellCoins = document.getElementById("sellCoins"); //<button>
 
 //Recibir datos del firebase del usuario que esta loggeado
 const getUserInfo = async (userId) => {
@@ -71,7 +92,7 @@ sellButton.addEventListener("click", e => {
     sellDrop.classList.add("drop");
 });
 
-//Acá valido la parte de suma y resta en la parte de comprar.
+//Acá valido la parte de suma y resta en la parte de COMPRAR.
 buyPlus.addEventListener("click", e => {
     comprarCantidad += 1;
     buyQuantity.innerHTML = comprarCantidad;
@@ -83,6 +104,55 @@ buyMinus.addEventListener("click", e => {
     }
     buyQuantity.innerHTML = comprarCantidad;
 });
+
+//Acá valido la parte de suma y resta en la parte de VENDER.
+sellPlus.addEventListener("click", e => {
+    venderCantidad += 1;
+    sellQuantity.innerHTML = venderCantidad;
+});
+
+sellMinus.addEventListener("click", e => {
+    if(venderCantidad > 1){
+        venderCantidad -= 1;
+    }
+    sellQuantity.innerHTML = venderCantidad;
+});
+
+coinValue.innerHTML = "Valor de la moneda: " + monedaBitCoin;
+//coinQuantity.innerHTML = "Tienes: " + cantidadMonedaBitCoin;
+
+//Comprar monedas
+sellCoins.addEventListener("click", e => {
+    console.log("Vendiste una moneda");
+
+    if(cantidadMonedaBitCoin >= 1 && venderCantidad <= cantidadMonedaBitCoin){
+        dolar = dolar + monedaBitCoin*cantidadMonedaBitCoin;
+        cantidadMonedaBitCoin = cantidadMonedaBitCoin - venderCantidad;
+        plata.innerHTML = dolar;
+        coinQuantity.innerHTML = "Tienes: " + cantidadMonedaBitCoin;
+        //movimientos.innerHTML = "Invertiste a bitCoins con un valor de: " + monedaBitCoin;
+        alert("Al convertir la moneda de Bitcoins tienes: " + dolar);
+    } else {
+        alert("Tienes más valor de la moneda");
+    }
+});
+
+//Comprar monedas
+buyCoins.addEventListener("click", e => {
+    console.log("Compraste una moneda");
+    totalMonedaComprada = monedaBitCoin*comprarCantidad;
+    if(totalMonedaComprada < dolar){
+        dolar = dolar - totalMonedaComprada;
+        cantidadMonedaBitCoin += 1;
+        plata.innerHTML = dolar;
+        coinQuantity.innerHTML = "Tienes: " + cantidadMonedaBitCoin;
+        movimientos.innerHTML = "Invertiste a bitCoins con un valor de: " + monedaBitCoin;
+        alert("Compraste " + comprarCantidad + " de bitCoins y tienes en total de dinero: " + dolar);
+    } else {
+        alert("No tienes el dinero suficiente para comprar más monedas, reduzca la cantidad");
+    }
+});
+
 
 //Reconocer el estado del usuario.
 onAuthStateChanged(auth, async (user) => {

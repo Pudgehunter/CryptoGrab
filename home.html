@@ -41,8 +41,9 @@
                 <figure><img class="cards_image" /></figure>
                 <!--Descripciónes sobre lo que tiene la carta-->
                 <div class="cards__description">
-                    <h2 class="cards__name">Bit coin (BTC)</h2>
-                    <p class="cards__coin--value">Valor hoy: $$$$$</p>
+                    <h2 class="cards__name">Bitcoin (BTC)</h2>
+                    <p id="coinQuantity">Tienes 0</p>
+                    <p id="coinValue" class="cards__coin--value"></p>
                     <!--Los botones me toco validarlo de esta manera para que sea más "profesional"-->
                     <div class="cards__buttons">
                         <div class="cards__button cards__buy">
@@ -56,7 +57,7 @@
                                     <p id="buyQuantity">1</p>
                                     <button id="buyPlus">+</button>
                                 </div>
-                                <button>Listo</button>
+                                <button id="buyCoins">Listo</button>
                             </div>
                         </div>
                         <!---->
@@ -67,11 +68,11 @@
                             <div id="sellDrop" class="cards__drop">
                                 <p>¿Cuantas deseas comprar?</p>
                                 <div class="cards__drop--item">
-                                    <button>-</button>
-                                    <p>1</p>
-                                    <button>+</button>
+                                    <button id="sellMinus">-</button>
+                                    <p id="sellQuantity">1</p>
+                                    <button id="sellPlus">+</button>
                                 </div>
-                                <button>Listo</button>
+                                <button id="sellCoins">Listo</button>
                             </div>
                         </div>
                          <!---->
@@ -118,6 +119,7 @@
         </div>
         <div>
             <h1>Tus movimientos</h1>
+            <div id="movimientos"></div>
         </div>
     </section>
     <!-----------------JS--------------------->

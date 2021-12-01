@@ -129,7 +129,6 @@ sellCoins.addEventListener("click", e => {
         cantidadMonedaBitCoin = cantidadMonedaBitCoin - venderCantidad;
         plata.innerHTML = dolar;
         coinQuantity.innerHTML = "Tienes: " + cantidadMonedaBitCoin;
-        //movimientos.innerHTML = "Invertiste a bitCoins con un valor de: " + monedaBitCoin;
         alert("Al convertir la moneda de Bitcoins tienes: " + dolar);
     } else {
         alert("Tienes más valor de la moneda");

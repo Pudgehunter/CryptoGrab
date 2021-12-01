@@ -20,9 +20,17 @@
   margin: 0px 10px 0px 10px;
 }
 
+.cards__drop {
+  display: none;
+}
+
 .cards__drop--item {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+}
+
+.drop {
+  display: block;
 }
 /*# sourceMappingURL=main.css.map */

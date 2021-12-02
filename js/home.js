@@ -98,7 +98,6 @@ const productTemplate = (item) => {
     } else {
         tagHtml = `<img class="product__tag card__tag--down" src="./img/up.png"/>`;
     }
-
     let coinValue = [0, 0, 0, 0, 0];
     let coinValueHtml;
     //Valido qué moneda esta hablando el card para no complicarse la vida que tiene muchas monedas.
@@ -134,7 +133,7 @@ const productTemplate = (item) => {
                 <div class="cards__description">
                     <h2 class="cards__name">${item.name}</h2>
                     ${coinValueHtml}
-                    <p id="coinValue" class="cards__coin--value">Valor individual de la moneda:  $${item.coinValue}</p>
+                    <p id="coinValue" class="cards__coin--value">Valor individual de la moneda: ${formatCurrency(item.coinValue)}</p>
                     <!--Los botones me toco validarlo de esta manera para que sea más "profesional"-->
                     <div class="cards__buttons">
                         <div class="cards__button cards__buy">
@@ -611,7 +610,7 @@ onAuthStateChanged(auth, async (user) => {
         const userInfo = await getUserInfo(user.uid);
         console.log(userInfo);
         username.innerHTML = "Bienvenido " + userInfo.name;
-        plata.innerHTML = "Tu plata es: $" + userInfo.dollar;
+        plata.innerHTML = "Tu plata es: " + formatCurrency(userInfo.dollar);
 
         if (userInfo.isAdmin == true) {
             admin.classList.add("visible");

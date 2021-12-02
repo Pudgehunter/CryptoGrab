@@ -1,17 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CryptoGrab-register</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com/%22%3E">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <!-----------------CSS--------------------->
+    <link rel="stylesheet" href="./sass/main.css">
 </head>
+
 <body>
     <section class="sign">
         <div class="sign__text">
+            <img class="sign__img" src="./img/registroimg.png" alt="">
             <h2>Regístrate</h2>
             <div class="sign__text--subtitle">
-                <p>¿Ya tienes cuenta? </p><a href="./index.html">Iniciar Sesión</a>
+                <p>¿Ya tienes cuenta? <a href="./index.html">Iniciar Sesión</a></p>
             </div>
             <form action="" id="register" class="auth">
                 <p>Nombre</p>
@@ -20,12 +29,13 @@
                 <p><input type="email" name="email" placeholder=""></p>
                 <p>Contraseña</p>
                 <p><input type="password" name="password" placeholder=""></p>
-
-                <input class="register__button" type="submit" value="Registrar">
             </form>
+            <input class="register__button" type="submit" value="Registrar">
+
         </div>
     </section>
     <script src="./js/utils.js"></script>
     <script type="module" src="./js/register.js"></script>
 </body>
+
 </html>

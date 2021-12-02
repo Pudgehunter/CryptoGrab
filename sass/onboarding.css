@@ -6,12 +6,13 @@ body {
   }
   .slider-slide {
     padding-top: 80px;
-    color: #000;
+    color: #929292;
     background-color: #fff;
     text-align: center;
-  
-    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
-    font-weight: 300;
+    font-size: 24px;
+    line-height: 29px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: normal;
   }
   
   #logo {
@@ -33,13 +34,13 @@ body {
   }
 
 .ion-record:before{
-    color:green;
+    color:#8DC8B4;
 }
 .bar-header{
     border-bottom-width: 0;
 }
 .button.button-positive.button-clear{
-    color: green;
+    color: #8DC8B4;
 }
   .onboarding {
   margin-left: 7%;
@@ -58,6 +59,12 @@ body {
   margin: 5%;
 }
 
+.onboarding__img2{
+  width: 484px;
+  height: 505.02px;
+  margin: 10%;
+}
+
 .onboarding__description {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -72,7 +79,19 @@ body {
   margin: 5%;
 }
 
+.textColor {
+  color: #1D4F44;
+  font-weight: bold;
+}
+
+li{
+  list-style: circle;
+  text-align: left;
+}
+
 .onboarding__description h1 {
-  color: green;
+  color: #1D4F44;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
 }
 /*# sourceMappingURL=onboarding2.css.map */

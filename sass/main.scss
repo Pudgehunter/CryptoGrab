@@ -100,6 +100,24 @@ h1 {
     }
 }
 
+.sign {
+    font-family: "Montserrat", sans-serif;
+    h2{
+        color: #1D4F44;
+    }
+    input {
+        border-color: #c7ddda;
+    }
+    input[type=submit] {
+        background-color: #4b907b;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        width: 82px;
+        color: white;
+    }
+}
+
 .drop {
     display: block;
 }

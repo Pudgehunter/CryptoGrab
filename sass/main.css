@@ -135,6 +135,27 @@ h1 {
   width: 82px;
 }
 
+.sign {
+  font-family: "Montserrat", sans-serif;
+}
+
+.sign h2 {
+  color: #1D4F44;
+}
+
+.sign input {
+  border-color: #c7ddda;
+}
+
+.sign input[type=submit] {
+  background-color: #4b907b;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  width: 82px;
+  color: white;
+}
+
 .drop {
   display: block;
 }

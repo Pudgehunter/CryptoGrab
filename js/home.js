@@ -235,7 +235,7 @@ const productTemplate = (item) => {
     const buyCoins = card.querySelector(".buyCoins"); //<button>
 
     //COMPRAR monedas
-    buyCoins.addEventListener("click", async e => {
+    buyCoins.addEventListener("click", async e => {    
         let totalMonedaComprada = parseInt(item.coinValue) * comprarCantidad[parseInt(item.id)];
         switch (parseInt(item.id)) {
             //DASH CRIPTOMONEDA
@@ -365,6 +365,7 @@ const productTemplate = (item) => {
 
     //VENDER monedas
     sellCoins.addEventListener("click", async e => {
+        const date = new Date();
         switch (parseInt(item.id)) {
             case 0:
                 if (userLogged.dash >= 1 && venderCantidad[0] <= userLogged.dash) {
@@ -420,7 +421,7 @@ const productTemplate = (item) => {
             case 2:
                 if (userLogged.dcr >= 1 && venderCantidad[2] <= userLogged.dcr) {
                     let dcrCoinTotal = parseInt(venderCantidad[2]) * parseInt(item.coinValue);
-                    let resta = parseInt(userLogged.dcr) - parseInt(venderCantidad[0]);
+                    let resta = parseInt(userLogged.dcr) - parseInt(venderCantidad[2]);
                     let total = parseInt(userLogged.dollar) + dcrCoinTotal;
                     console.log(total);
                     await setDoc(doc(db, "users", userLogged.uid), {
@@ -512,7 +513,8 @@ const createMov = async (total, name, dash, sol, dcr, ltc, xmr) => {
             sol: sol,
             dcr: dcr,
             ltc: ltc,
-            xmr: xmr
+            xmr: xmr,
+            date: Date()
         });
     } catch (e) {
         console.log(e)
@@ -541,7 +543,8 @@ const getAllMovimientos = async () => {
 //Render de movimientos
 const renderMovimiento = (item) => {
     const card = document.createElement("div");
-    card.innerHTML = `<p>${item.name} invirtió ${item.inversion} de ${item.nombreMoneda}. Dash: ${item.dash}, SOL: ${item.sol}, DCR: ${item.dcr}, LTC: ${item.ltc}, XMR: ${item.xmr}</p>`;
+    //const datees = item.date.toDate().toDateString();
+    card.innerHTML = `<p>${item.name} invirtió ${item.inversion} de ${item.nombreMoneda}. Dash: ${item.dash}, SOL: ${item.sol}, DCR: ${item.dcr}, LTC: ${item.ltc}, XMR: ${item.xmr}. DATE: ${item.date}</p>`;
 
     // Agregar cada producto a nuestro contenedor
     movimientoSection.appendChild(card);
@@ -560,7 +563,8 @@ const createMovGanar = async (total, name, dash, sol, dcr, ltc, xmr) => {
             sol: sol,
             dcr: dcr,
             ltc: ltc,
-            xmr: xmr
+            xmr: xmr,
+            date: Date()
         });
     } catch (e) {
         console.log(e)
@@ -592,7 +596,7 @@ const getAllMovimientosGanar = async () => {
 //Render de movimientos
 const renderMovimientoGanar = (item) => {
     const card = document.createElement("div");
-    card.innerHTML = `<p>${item.name} obtuvo ${item.ganancias} de ${item.nombreMoneda}. Dash: ${item.dash}, SOL: ${item.sol}, DCR: ${item.dcr}, LTC: ${item.ltc}, XMR: ${item.xmr}</p>`;
+    card.innerHTML = `<p>${item.name} obtuvo ${item.ganancias} de ${item.nombreMoneda}. Dash: ${item.dash}, SOL: ${item.sol}, DCR: ${item.dcr}, LTC: ${item.ltc}, XMR: ${item.xmr}. DATE: ${item.date}</p>`;
 
     // Agregar cada producto a nuestro contenedor
     ventaMovimientosSection.appendChild(card);

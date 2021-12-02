@@ -62,13 +62,15 @@ loginButton.addEventListener("click", e => {
 //Tener un arreglo de cards
 let cards = [];
 
+const spinner = document.getElementById("spinner");
+
 //Lectura de firebase sobre los CARDS que estan y sus respectivos precios
 const getAllCards = async () => {
     const collectionRef = collection(db, "cards");
     const { docs } = await getDocs(collectionRef);
 
     //productsSection.classList.add("loaded");
-    //spinner.classList.add("loaded");
+    spinner.classList.add("loaded");
 
     cards = docs.map((doc) => {
         return {

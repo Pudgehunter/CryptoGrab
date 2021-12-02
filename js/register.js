@@ -32,6 +32,7 @@ const registerBtn = document.getElementById("register");
 
 registerBtn.addEventListener("submit", e => {
     e.preventDefault();
+    console.log("Funciono");
     const name = registerBtn.name.value;
     const email = registerBtn.email.value;
     const password = registerBtn.password.value;

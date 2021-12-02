@@ -33,6 +33,7 @@ const ingresarBtn = document.getElementById("logIn");
 
 ingresarBtn.addEventListener("submit", e => {
     e.preventDefault();
+    console.log("Funciono");
     const email = ingresarBtn.email.value;
     const password = ingresarBtn.password.value;
 

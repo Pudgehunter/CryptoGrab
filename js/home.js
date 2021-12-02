@@ -94,9 +94,9 @@ const productTemplate = (item) => {
     // Lógica de nuestro tag, botón de Recomendado o Más vendido
     let tagHtml;
     if (item.isUp) {
-        tagHtml = `<img class="card__tag card__tag--up" src="./img/up.png"/>`;
+        tagHtml = `<img class="cards__tag cards__tag--up" src="./img/up.png"/>`;
     } else {
-        tagHtml = `<img class="product__tag card__tag--down" src="./img/up.png"/>`;
+        tagHtml = `<img class="cards__tag cards__tag--down" src="./img/down.png"/>`;
     }
     let coinValue = [0, 0, 0, 0, 0];
     let coinValueHtml;
@@ -132,6 +132,7 @@ const productTemplate = (item) => {
                 <!--Descripciónes sobre lo que tiene la carta-->
                 <div class="cards__description">
                     <h2 class="cards__name">${item.name}</h2>
+                    ${tagHtml}
                     ${coinValueHtml}
                     <p id="coinValue" class="cards__coin--value">Valor individual de la moneda: ${formatCurrency(item.coinValue)}</p>
                     <!--Los botones me toco validarlo de esta manera para que sea más "profesional"-->
@@ -141,6 +142,7 @@ const productTemplate = (item) => {
                             <button class="buyButton">Comprar</button>
                             <!--drop-->
                             <div class="buyDrop cards__drop">
+                            <div class="flexDrop">
                                 <p>¿Cuantas deseas comprar?</p>
                                 <div class="cards__drop--item">
                                     <button class="buyMinus">-</button>
@@ -149,6 +151,7 @@ const productTemplate = (item) => {
                                 </div>
                                 <button class="buyCoins">Listo</button>
                             </div>
+                            </div>
                         </div>
                         <!---->
                         <div class="cards__button cards__sell">
@@ -156,6 +159,7 @@ const productTemplate = (item) => {
                             <button class="sellButton">Vender</button>
                             <!--drop-->
                             <div class="sellDrop cards__drop">
+                            <div class="flexDrop">
                                 <p>¿Cuantas deseas vender?</p>
                                 <div class="cards__drop--item">
                                     <button class="sellMinus">-</button>
@@ -163,6 +167,7 @@ const productTemplate = (item) => {
                                     <button class="sellPlus">+</button>
                                 </div>
                                 <button class="sellCoins">Listo</button>
+                            </div>
                             </div>
                         </div>
                          <!---->
@@ -254,7 +259,7 @@ const productTemplate = (item) => {
                         password: userLogged.password,
                         xmr: userLogged.xmr
                     });
-                    createMov(totalMonedaComprada, item.name, plus, userLogged.sol, userLogged.dcr, userLogged.ltc, userLogged.xmr);
+                    createMov(totalMonedaComprada, item.name, plus, userLogged.sol, userLogged.dcr, userLogged.ltc, userLogged.xmr, comprarCantidad[0], parseInt(item.coinValue));
                     alert("Compraste " + comprarCantidad[0] + " de " + item.name + " por " + totalMonedaComprada + " y tienes: " + total);
                     window.location.reload();
                 } else {
@@ -278,7 +283,7 @@ const productTemplate = (item) => {
                         password: userLogged.password,
                         xmr: userLogged.xmr
                     });
-                    createMov(totalMonedaComprada, item.name, userLogged.dash, plus, userLogged.dcr, userLogged.ltc, userLogged.xmr);
+                    createMov(totalMonedaComprada, item.name, userLogged.dash, plus, userLogged.dcr, userLogged.ltc, userLogged.xmr, comprarCantidad[1], parseInt(item.coinValue));
                     alert("Compraste " + comprarCantidad[1] + " de " + item.name + " por " + totalMonedaComprada + " y tienes: " + total);
                     window.location.reload();
                 } else {
@@ -302,7 +307,7 @@ const productTemplate = (item) => {
                         password: userLogged.password,
                         xmr: userLogged.xmr
                     });
-                    createMov(totalMonedaComprada, item.name, userLogged.dash, userLogged.sol, plus, userLogged.ltc, userLogged.xmr);
+                    createMov(totalMonedaComprada, item.name, userLogged.dash, userLogged.sol, plus, userLogged.ltc, userLogged.xmr, comprarCantidad[2], parseInt(item.coinValue));
                     alert("Compraste " + comprarCantidad[2] + " de " + item.name + " por " + totalMonedaComprada + " y tienes: " + total);
                     window.location.reload();
                 } else {
@@ -325,7 +330,7 @@ const productTemplate = (item) => {
                         password: userLogged.password,
                         xmr: userLogged.xmr
                     });
-                    createMov(totalMonedaComprada, item.name, userLogged.dash, userLogged.sol, userLogged.dcr, plus, userLogged.xmr);
+                    createMov(totalMonedaComprada, item.name, userLogged.dash, userLogged.sol, userLogged.dcr, plus, userLogged.xmr, comprarCantidad[3], parseInt(item.coinValue));
                     alert("Compraste " + comprarCantidad[3] + " de " + item.name + " por " + totalMonedaComprada + " y tienes: " + total);
                     window.location.reload();
                 } else {
@@ -349,7 +354,7 @@ const productTemplate = (item) => {
                         password: userLogged.password,
                         xmr: plus
                     });
-                    createMov(totalMonedaComprada, item.name, userLogged.dash, userLogged.sol, userLogged.dcr, userLogged.ltc, plus);
+                    createMov(totalMonedaComprada, item.name, userLogged.dash, userLogged.sol, userLogged.dcr, userLogged.ltc, plus, comprarCantidad[4], parseInt(item.coinValue));
                     alert("Compraste " + comprarCantidad[4] + " de " + item.name + " por " + totalMonedaComprada + " y tienes: " + total);
                     window.location.reload();
                 } else {
@@ -384,7 +389,7 @@ const productTemplate = (item) => {
                         password: userLogged.password,
                         xmr: userLogged.xmr
                     });
-                    createMovGanar(dashCoinTotal, item.name, resta, userLogged.sol, userLogged.dcr, userLogged.ltc, userLogged.xmr);
+                    createMovGanar(dashCoinTotal, item.name, resta, userLogged.sol, userLogged.dcr, userLogged.ltc, userLogged.xmr, venderCantidad[0], parseInt(item.coinValue));
                     alert("Vendiste " + venderCantidad[0] + " de " + item.name + " por " + dashCoinTotal + " y tienes: " + total);
                     window.location.reload();
                 } else {
@@ -410,7 +415,7 @@ const productTemplate = (item) => {
                         password: userLogged.password,
                         xmr: userLogged.xmr
                     });
-                    createMovGanar(solCoinTotal, item.name, userLogged.dash, resta, userLogged.dcr, userLogged.ltc, userLogged.xmr);
+                    createMovGanar(solCoinTotal, item.name, userLogged.dash, resta, userLogged.dcr, userLogged.ltc, userLogged.xmr, venderCantidad[1], parseInt(item.coinValue));
                     alert("Vendiste " + venderCantidad[1] + " de " + item.name + " por " + solCoinTotal + " y tienes: " + total);
                     window.location.reload();
                 } else {
@@ -435,7 +440,7 @@ const productTemplate = (item) => {
                         password: userLogged.password,
                         xmr: userLogged.xmr
                     });
-                    createMovGanar(dcrCoinTotal, item.name, userLogged.dash, userLogged.sol, resta, userLogged.ltc, userLogged.xmr);
+                    createMovGanar(dcrCoinTotal, item.name, userLogged.dash, userLogged.sol, resta, userLogged.ltc, userLogged.xmr, venderCantidad[2], parseInt(item.coinValue));
                     alert("Vendiste " + venderCantidad[2] + " de " + item.name + " por " + dcrCoinTotal + " y tienes: " + total);
                     window.location.reload();
                 } else {
@@ -461,7 +466,7 @@ const productTemplate = (item) => {
                         password: userLogged.password,
                         xmr: userLogged.xmr
                     });
-                    createMovGanar(ltcCoinTotal, item.name, userLogged.dash, userLogged.sol, userLogged.dcr, resta, userLogged.xmr);
+                    createMovGanar(ltcCoinTotal, item.name, userLogged.dash, userLogged.sol, userLogged.dcr, resta, userLogged.xmr, venderCantidad[3], parseInt(item.coinValue));
                     alert("Vendiste " + venderCantidad[3] + " de " + item.name + " por " + ltcCoinTotal + " y tienes: " + total);
                     window.location.reload();
                 } else {
@@ -486,7 +491,7 @@ const productTemplate = (item) => {
                         password: userLogged.password,
                         xmr: resta
                     });
-                    createMovGanar(xmrCoinTotal, item.name, userLogged.dash, userLogged.sol, userLogged.dcr, userLogged.ltc, resta);
+                    createMovGanar(xmrCoinTotal, item.name, userLogged.dash, userLogged.sol, userLogged.dcr, userLogged.ltc, resta, venderCantidad[4], parseInt(item.coinValue));
                     alert("Vendiste " + venderCantidad[4] + " de " + item.name + " por " + xmrCoinTotal + " y tienes: " + total);
                     window.location.reload();
                 } else {
@@ -502,12 +507,14 @@ const productTemplate = (item) => {
 let movimientosDocs = [];
 
 //Generar los movimientos
-const createMov = async (total, name, dash, sol, dcr, ltc, xmr) => {
+const createMov = async (total, name, dash, sol, dcr, ltc, xmr, cantidad, precio) => {
     try {
         const movimiento = await addDoc(collection(db, "movimientos"), {
             name: userLogged.name,
             inversion: total,
             nombreMoneda: name,
+            precio: precio,
+            cantidad: cantidad,
             dash: dash,
             sol: sol,
             dcr: dcr,
@@ -543,7 +550,7 @@ const getAllMovimientos = async () => {
 const renderMovimiento = (item) => {
     const card = document.createElement("div");
     //const datees = item.date.toDate().toDateString();
-    card.innerHTML = `<p>${item.name} invirtió ${item.inversion} de ${item.nombreMoneda}. Dash: ${item.dash}, SOL: ${item.sol}, DCR: ${item.dcr}, LTC: ${item.ltc}, XMR: ${item.xmr}. DATE: ${item.date}</p>`;
+    card.innerHTML = `<p>${item.name} invirtió ${item.cantidad} * ${item.precio} y el total es: ${item.inversion} de ${item.nombreMoneda}. Dash: ${item.dash}, SOL: ${item.sol}, DCR: ${item.dcr}, LTC: ${item.ltc}, XMR: ${item.xmr}. DATE: ${item.date}</p>`;
 
     // Agregar cada producto a nuestro contenedor
     movimientoSection.appendChild(card);
@@ -552,12 +559,14 @@ const renderMovimiento = (item) => {
 
 
 //Generar los movimientos
-const createMovGanar = async (total, name, dash, sol, dcr, ltc, xmr) => {
+const createMovGanar = async (total, name, dash, sol, dcr, ltc, xmr, cantidad, precio) => {
     try {
         const movimiento = await addDoc(collection(db, "movimientosGanar"), {
             name: userLogged.name,
             ganancias: total,
             nombreMoneda: name,
+            cantidad: cantidad,
+            precio: precio,
             dash: dash,
             sol: sol,
             dcr: dcr,
@@ -595,7 +604,7 @@ const getAllMovimientosGanar = async () => {
 //Render de movimientos
 const renderMovimientoGanar = (item) => {
     const card = document.createElement("div");
-    card.innerHTML = `<p>${item.name} obtuvo ${item.ganancias} de ${item.nombreMoneda}. Dash: ${item.dash}, SOL: ${item.sol}, DCR: ${item.dcr}, LTC: ${item.ltc}, XMR: ${item.xmr}. DATE: ${item.date}</p>`;
+    card.innerHTML = `<p>${item.name} obtuvo de ${item.cantidad} * ${item.precio} y el total de ${item.ganancias} de ${item.nombreMoneda}. Dash: ${item.dash}, SOL: ${item.sol}, DCR: ${item.dcr}, LTC: ${item.ltc}, XMR: ${item.xmr}. DATE: ${item.date}</p>`;
 
     // Agregar cada producto a nuestro contenedor
     ventaMovimientosSection.appendChild(card);

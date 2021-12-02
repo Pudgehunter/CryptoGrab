@@ -1,5 +1,7 @@
 body {
     cursor: url('https://ionicframework.com/img/finger.png'), auto;
+    width: 100%;
+    height: 100%;
   }
   .slider {
     height: 100%;
@@ -60,9 +62,9 @@ body {
 }
 
 .onboarding__img2{
-  width: 484px;
-  height: 505.02px;
-  margin: 10%;
+  width: 50%;
+  height: 50%;
+  margin: 0;
 }
 
 .onboarding__description {
@@ -77,6 +79,21 @@ body {
       -ms-flex-pack: center;
           justify-content: center;
   margin: 5%;
+}
+
+.onboarding__description2{
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin: 0 0 0 2% !important;
+ 
 }
 
 .textColor {

@@ -1,7 +1,22 @@
+* {
+    padding: 0%;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+h1 {
+    margin: 10px;
+}
+
+h2 {
+    margin: 10px;
+}
+
 //Navegación de home.html
 .nav {
     display: flex;
     width: 100%;
+    align-items: center;
     justify-content: space-around;
     background-color: #8dc8b4;
     padding: 20px;
@@ -35,6 +50,74 @@ h1 {
     font-weight: lighter;
 }
 
+
+.buyPlus,
+.buyMinus {
+    width: 30px;
+    height: 30px;
+    //Botton styles
+    background-color: white;
+    border: solid 1px;
+    color: #4b907b;
+    border-radius: 5px;
+    &:hover{
+        background-color: #4b907b;
+        color: white;
+    }
+}
+.sellMinus,
+.sellPlus{
+    width: 30px;
+    height: 30px;
+    //Botton styles
+    background-color: white;
+    border: solid 1px;
+    color: #d3a792;
+    border-radius: 5px;
+    &:hover{
+        background-color: #d3a792;
+        color: white;
+    }
+}
+
+.buyQuantity, .sellQuantity {
+    margin: 0 5px;
+}
+
+.flexDrop{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.buyCoins {
+    margin-top: 10px;
+    background-color: white;
+    border: solid 1px;
+    color: #4b907b;
+    padding: 10px;
+    border-radius: 5px;
+    width: 82px;
+    &:hover{
+        background-color: #4b907b;
+        color: white; 
+    }
+}
+
+.sellCoins{
+    margin-top: 10px;
+    background-color: white;
+    border: solid 1px;
+    color: #d3a792;
+    padding: 10px;
+    border-radius: 5px;
+    width: 82px;
+    &:hover{
+        background-color: #d3a792;
+        color: white; 
+    }
+}
+
 .cards {
     display: flex;
     justify-content: space-evenly;
@@ -43,6 +126,10 @@ h1 {
     font-weight: normal;
     h2 {
         color: #1d4f44;
+    }
+    &__tag {
+        position: absolute;
+        right: 20px;
     }
     &__drop {
         display: none;
@@ -55,8 +142,13 @@ h1 {
         display: none;
         list-style: none;
         text-decoration: none;
+        & p {
+            margin-bottom: 10px;
+        }
         &--item {
             display: flex;
+            align-items: center;
+            justify-content: center;
         }
     }
     &__description {
@@ -82,54 +174,70 @@ h1 {
         display: flex;
         justify-content: space-between;
         .buyButton {
-            background-color: #4b907b;
-            border: none;
-            color: white;
+            background-color: white;
+            border: solid 1px;
+            color: #4b907b;
             padding: 10px;
             border-radius: 5px;
             width: 82px;
+            &:hover {
+                background-color: #4b907b;
+                color: white;
+            }
         }
         .sellButton {
-            background-color: #edc7b4;
-            border: none;
-            color: white;
+            background-color: white;
+            border: solid 1px;
+            color: #d3a792;
             padding: 10px;
             border-radius: 5px;
             width: 82px;
+            &:hover {
+                background-color: #d3a792;
+                color: white;
+            }
         }
     }
 }
 
 .sign {
-
-   
     font-family: "Montserrat", sans-serif;
-    h2{
-        color: #1D4F44;
+    h2 {
+        color: #1d4f44;
     }
     input {
         border-color: #c7ddda;
     }
-    input[type=submit] {
-        background-color: #4b907b;
-        border: none;
+    input[type="submit"] {
+        background-color: white;
+        border: solid 1px;
         padding: 10px;
         border-radius: 5px;
         width: 82px;
-        color: white;
+        color: #4b907b;
         align-items: center;
+        margin: 10px;
+        &:hover {
+            background-color: #4b907b;
+            color: white;
+        }
     }
 
     &__text {
-        
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.auth {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    & p {
+        margin: 10px;
     }
-
-
-
 }
 
 .drop {

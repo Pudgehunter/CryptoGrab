@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CriptoGrab-onboarding</title>
+
+    <link href="https://code.ionicframework.com/0.9.26/css/ionic.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./sass/onboarding.css">
+    
+</head>
+
+<body ng-app="ionicApp" animation="slide-left-right-ios7">
+
+    <ion-nav-bar class="nav-title-slide-ios7" type="bar-default" back-button-type="button-icon"
+        back-button-icon="icon ion-arrow-left-c"></ion-nav-bar>
+
+    <ion-nav-view></ion-nav-view>
+
+
+    <script id="intro.html" type="text/ng-template">
+      <ion-view left-buttons="leftButtons" right-buttons="rightButtons">
+        <ion-slide-box on-slide-changed="slideChanged(index)">
+          <ion-slide>
+            <div class="onboarding">
+                <div class="onboarding__main">
+                    <img class="onboarding__img" src="./img/onboarding/onb1.png" alt="">
+                    <div class="onboarding__description">
+                        <h1>Bienvenido a CriptoGrab</h1>
+                        <p>Es una aplicación de simulación que te permitirá experimentar con diversas criptomonedas, para que entiendas cómo funcionan las inversiones.</p>
+                    </div>
+                </div>
+            </div>
+          </ion-slide>
+          <ion-slide>
+            <div class="onboarding">
+                <div class="onboarding__main">
+                    <img class="onboarding__img" src="./img/onboarding/onb1.png" alt="">
+                    <div class="onboarding__description">
+                        <h1>Por medio de esta simulación</h1>
+                        <p>Podrás identificar las buenas inversiones durante el proceso, iniciarás con un monto de dinero ficticio en dólares estadounidenses, y a medida que interactues con la página, podrás ganar o perder dicho dinero.</p>
+                    </div>
+                </div>
+            </div>
+          </ion-slide>
+          <ion-slide>
+            <div class="onboarding">
+                <div class="onboarding__main">
+                    <img class="onboarding__img" src="./img/onboarding/onb1.png" alt="">
+                    <div class="onboarding__description">
+                        <p>Quizás te estás preguntando...</p>
+                        <h1>¿Qué son las criptomonedas?</h1>
+                        <p> Bueno, las criptomonedas son dinero electrónico.</p>
+                    </div>
+                </div>
+            </div>
+          </ion-slide>
+          <ion-slide>
+            <div class="onboarding">
+                <div class="onboarding__main">
+                    <img class="onboarding__img" src="./img/onboarding/onb1.png" alt="">
+                    <div class="onboarding__description">
+                        <p>La página te presentará distintos tipos de criptomonedas con sus valores reales, a medida que avance la simulación, estos valores podrían variar dependiendo de las noticias más recientes sobre cada criptomoneda diariamente.</p>
+                    </div>
+                </div>
+            </div>
+          </ion-slide>
+          <ion-slide>
+            <div class="onboarding">
+                <div class="onboarding__main">
+                    <img class="onboarding__img" src="./img/onboarding/onb1.png" alt="">
+                    <div class="onboarding__description">
+                        <p>Lo único que tendrás que hacer es decidir cuál moneda comprar, y cuales vender usando los dólares ficticios que se te darán. Esa será toda la interacción.</p>
+                    </div>
+                </div>
+            </div>
+          </ion-slide>
+          <ion-slide>
+            <div class="onboarding">
+                <div class="onboarding__main">
+                    <img class="onboarding__img" src="./img/onboarding/onb1.png" alt="">
+                    <div class="onboarding__description">
+                        <p>Ahora te daremos unos tips para tomar buenas decisiones a la hora de invertir:</p>
+                        <p>- Invierte en varias criptomonedas para mejorar tus posibilidades.
+                        - Revisa constántemente la fluctuación del valor de la moneda para decidir si conservar lo que tienes o invertir en otra.
+                        - Es bueno que busques en internet reviews de otras personas.
+                        - No inviertas demasiado dinero de una sola vez..</p>
+                    </div>
+                </div>
+            </div>
+          </ion-slide>
+        </ion-slide-box>
+      </ion-view>
+    </script>
+
+    <script id="main.html" type="text/ng-template">
+      <ion-view left-buttons="leftButtons" right-buttons="rightButtons" hide-back-button="true" title="'Awesome'">
+        <ion-content padding="true" has-header="true">
+          <h1>Main app here</h1>
+          <button class="button" ng-click="toIntro()">Do Tutorial Again</button>
+        </ion-content>
+      </ion-view>
+    </script>
+    <script src="https://code.ionicframework.com/0.9.26/js/ionic.bundle.min.js"></script>
+    <script src="./js/onboarding.js"></script>
+</body>
+
+</html>

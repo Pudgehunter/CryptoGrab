@@ -1,0 +1,78 @@
+body {
+    cursor: url('https://ionicframework.com/img/finger.png'), auto;
+  }
+  .slider {
+    height: 100%;
+  }
+  .slider-slide {
+    padding-top: 80px;
+    color: #000;
+    background-color: #fff;
+    text-align: center;
+  
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+    font-weight: 300;
+  }
+  
+  #logo {
+    margin: 30px 0px;
+  }
+  
+  #list {
+    width: 170px;
+    margin: 30px auto;
+    font-size: 20px;
+  }
+  #list ol {
+    margin-top: 30px;
+  }
+  #list ol li {
+    text-align: left;
+    list-style: decimal;
+    margin: 10px 0px;
+  }
+
+.ion-record:before{
+    color:green;
+}
+.bar-header{
+    border-bottom-width: 0;
+}
+.button.button-positive.button-clear{
+    color: green;
+}
+  .onboarding {
+  margin-left: 7%;
+  margin-right: 7%;
+}
+
+.onboarding__main {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.onboarding__img {
+  width: 50%;
+  height: 50%;
+  margin: 5%;
+}
+
+.onboarding__description {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin: 5%;
+}
+
+.onboarding__description h1 {
+  color: green;
+}
+/*# sourceMappingURL=onboarding2.css.map */

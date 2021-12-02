@@ -18,7 +18,7 @@ const logIn = async (email, password) => {
 
         alert("Pues supuestamente ingresaste we");
 
-        window.location = "./home.html";
+        window.location = "./onboarding.html";
     } catch (e) {
         console.log(e);
         if (e.code === "auth/wrong-password") {

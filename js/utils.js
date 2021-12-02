@@ -7,3 +7,11 @@ const firebaseConfig = {
   messagingSenderId: "781843419244",
   appId: "1:781843419244:web:3875e984b8024c72e4c849"
 };
+
+const formatCurrency = (price) => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+  }).format(price);
+};

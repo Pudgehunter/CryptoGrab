@@ -40,6 +40,9 @@ h2 {
         color: white;
         font-weight: bolder;
         font-size: larger;
+        &:hover{
+            color: #DD5C5C
+        }
     }
 }
 

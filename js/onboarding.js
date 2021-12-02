@@ -65,7 +65,7 @@ if(window.localStorage['didTutorial'] === "true") {
       type: 'button-positive button-clear',
       tap: function(e) {
         // Start the app on tap
-        startApp();
+        window.location = "./home.html";
       }
     }
   ];

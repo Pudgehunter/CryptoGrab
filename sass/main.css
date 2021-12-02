@@ -58,6 +58,10 @@ h2 {
   font-size: larger;
 }
 
+.nav button:hover {
+  color: #DD5C5C;
+}
+
 h1 {
   font-family: "Montserrat", sans-serif;
   font-weight: normal;

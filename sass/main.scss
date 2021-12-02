@@ -101,6 +101,8 @@ h1 {
 }
 
 .sign {
+
+   
     font-family: "Montserrat", sans-serif;
     h2{
         color: #1D4F44;
@@ -115,7 +117,19 @@ h1 {
         border-radius: 5px;
         width: 82px;
         color: white;
+        align-items: center;
     }
+
+    &__text {
+        
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    }
+
+
+
 }
 
 .drop {

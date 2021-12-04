@@ -16,10 +16,11 @@ const logIn = async (email, password) => {
         const { user } = await signInWithEmailAndPassword(auth, email, password);
         //const userInfo = await getUserInfo(user.uid);
 
-        alert("Pues supuestamente ingresaste we");
+        //alert("Pues supuestamente ingresaste we");
+        //alert("Espera el día siguiente, recuerda que es hasta las 8:00pm");
 
         //window.location = "./onboarding.html";
-        window.location = "./home.html";
+        //window.location = "./home.html";
     } catch (e) {
         console.log(e);
         if (e.code === "auth/wrong-password") {
@@ -33,15 +34,16 @@ const logIn = async (email, password) => {
 const ingresarBtn = document.getElementById("logIn");
 
 ingresarBtn.addEventListener("submit", e => {
-    e.preventDefault();
-    console.log("Funciono");
-    const email = ingresarBtn.email.value;
-    const password = ingresarBtn.password.value;
+    alert("Espera el día siguiente, recuerda que es hasta las 8:00pm");
+    // e.preventDefault();
+    // console.log("Funciono");
+    // const email = ingresarBtn.email.value;
+    // const password = ingresarBtn.password.value;
 
-    if (email && password) {
-        logIn(email, password);
-    } else {
-        alert("completa todos los campos");
-    }
+    // if (email && password) {
+    //     logIn(email, password);
+    // } else {
+    //     alert("completa todos los campos");
+    // }
 }
 );

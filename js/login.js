@@ -38,7 +38,6 @@ ingresarBtn.addEventListener("submit", e => {
     console.log("Funciono");
     const email = ingresarBtn.email.value;
     const password = ingresarBtn.password.value;
-    //
 
     if (email && password) {
         logIn(email, password);

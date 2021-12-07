@@ -48,7 +48,7 @@
             <div class="ring"></div>
             <div class="ring"></div>
             <div class="ring"></div>
-          </div>
+        </div>
 
         <div class="hidden" id="admin">
             <h1>Tus movimientos: Inversión</h1>
@@ -56,11 +56,23 @@
             <h1>Tus movimientos: Ganancias</h1>
             <div id="movimientosGanar"></div>
         </div>
+        <!--Excel vaina-->
+        <button class="btn_excel">Descargar Excel</button>
     </section>
     <!-----------------JS--------------------->
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"
+        integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js "></script>
+
     <script src="./js/utils.js"></script>
     <!--<script type="module" src="./js/cards.js"></script>-->
+
+    <script src="js/Movimientos.js"></script>
+    <script src="js/MovimientosGanar.js"></script>
     <script type="module" src="./js/home.js"></script>
+    
 </body>
 
 </html>

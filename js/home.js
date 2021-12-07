@@ -6,6 +6,11 @@ import { getFirestore, doc, addDoc, collection, getDoc, getDocs, setDoc } from "
 let userLogged = {}
 let mov = [];
 
+//ARRAYS PARA EXCEL
+let personas = [];
+let movimientosInvertir = [];
+let movimientosVender = [];
+
 //ATRIBUTOS DE HOME.JS
 let comprarCantidad = [0, 0, 0, 0, 0]; //Esta es el variable que ayuda a contar las monedas de "comprar" (PREDETERMINADAS AL INICIO);
 let venderCantidad = [0, 0, 0, 0, 0]; //Esta es el variable que ayuda a contar las monedas de "vender" (PREDETERMINADAS AL INICIO);
@@ -27,6 +32,9 @@ const ventaMovimientosSection = document.getElementById("movimientosGanar");
 
 //div del complemento
 const cardSection = document.getElementById("cards");
+
+//EXCEL BTN
+const excel = document.getElementById("excel");
 
 //Recibir datos del firebase del usuario que esta loggeado
 const getUserInfo = async (userId) => {
@@ -540,6 +548,9 @@ const getAllMovimientos = async () => {
             id: doc.id,
         }
     });
+
+    //console.log(movimientosDocs);
+
     // Recorro cada uno de los 5 cartas que tengo en mi arreglo
     movimientosDocs.forEach(movimiento => {
         // Llamo la funcion productTemplate para cada product.
@@ -615,6 +626,131 @@ const renderMovimientoGanar = (item) => {
 
 const admin = document.getElementById("admin");
 
+let userFirebase = [];
+//Lectura de firebase sobre los users que estan y sus respectivos precios
+const getAllUser = async () => {
+    const collectionRef = collection(db, "users");
+    const { docs } = await getDocs(collectionRef);
+
+    userFirebase = docs.map((doc) => {
+        return {
+            ...doc.data(),
+            id: doc.id,
+        }
+    });
+
+    //console.log(userFirebase);
+    return userFirebase;
+};
+
+
+//EXCEL
+excel.addEventListener('click', () => {
+    //alert("Funciono");
+    
+    //console.log(fromArrayToExcel());
+    downloadResultsExcel(fromArrayToExcel(),fromArrayToExcel2(),fromArrayToExcel3());
+});
+
+//Formatear nuestros objetos en un arreglo de arreglos que recibe la libreria
+const fromArrayToExcel = () => {
+    let excelTable = [];
+    excelTable.push(['NOMBRE', 'NOMBREMONEDA', 'CANTIDAD', 'INVERSION', 'PRECIO', 'DASH', 'DCR', 'LTC', 'SOL', 'XMR', 'DATE']);
+    movimientosDocs.forEach(persona => {
+        let row = [];
+        row.push(persona.name);
+        row.push(persona.nombreMoneda);
+        row.push(persona.cantidad);
+        row.push(persona.inversion);
+        row.push(persona.precio);
+        row.push(persona.dash);
+        row.push(persona.dcr);
+        row.push(persona.ltc);
+        row.push(persona.sol);
+        row.push(persona.xmr);
+        row.push(persona.date);
+        excelTable.push(row);
+    })
+    return excelTable;
+}
+
+//Formatear nuestros objetos en un arreglo de arreglos que recibe la libreria
+const fromArrayToExcel2 = () => {
+    let excelTable = [];
+    excelTable.push(['NOMBRE', 'NOMBREMONEDA', 'CANTIDAD', 'GANANCIAS', 'PRECIO', 'DASH', 'DCR', 'LTC', 'SOL', 'XMR', 'DATE']);
+    movimientosGanar.forEach(persona => {
+        let row = [];
+        row.push(persona.name);
+        row.push(persona.nombreMoneda);
+        row.push(persona.cantidad);
+        row.push(persona.ganancias);
+        row.push(persona.precio);
+        row.push(persona.dash);
+        row.push(persona.dcr);
+        row.push(persona.ltc);
+        row.push(persona.sol);
+        row.push(persona.xmr);
+        row.push(persona.date);
+        excelTable.push(row);
+    })
+    return excelTable;
+}
+
+//Formatear nuestros objetos en un arreglo de arreglos que recibe la libreria
+const fromArrayToExcel3 = () => {
+    let excelTable = [];
+    excelTable.push(['NOMBRE', 'GANANCIAS']);
+    userFirebase.forEach(persona => {
+        let row = [];
+        row.push(persona.name);
+        row.push(persona.dollar);
+        excelTable.push(row);
+    })
+    return excelTable;
+}
+
+//DOWNLOADRESULTEXCEL
+const downloadResultsExcel = (excelTable,excelTableTwo,excelTableThree) => {
+
+    var wb = XLSX.utils.book_new();
+
+    wb.Props = {
+        Title: 'Resultados HCI',
+        Subject: 'Results',
+        Author: 'HciTeam',
+        CreatedDate: new Date()
+    }
+
+    wb.SheetNames.push('Movimientos');
+    wb.SheetNames.push('MovimientosGanar');
+    wb.SheetNames.push('Personas');
+
+    var ws_data = excelTable;
+    var ws_data_two = excelTableTwo;
+    var ws_data_three = excelTableThree;
+
+    var ws = XLSX.utils.aoa_to_sheet(ws_data);
+    wb.Sheets['Movimientos'] = ws;
+
+    var wsTwo = XLSX.utils.aoa_to_sheet(ws_data_two);
+    wb.Sheets['MovimientosGanar'] = wsTwo;
+
+    var wsThree = XLSX.utils.aoa_to_sheet(ws_data_three);
+    wb.Sheets['Personas'] = wsThree;
+
+    var wb_out = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+
+    function s2ab(s) {
+        var buf = new ArrayBuffer(s.length);
+        var view = new Uint8Array(buf);
+        for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+        return buf;
+    }
+
+    saveAs(new Blob([s2ab(wb_out)], { type: 'application/octec-stream' }), 'HCI_Results' + '.xlsx');
+}
+
+
 //Reconocer el estado del usuario.
 onAuthStateChanged(auth, async (user) => {
     if (user) {
@@ -644,4 +780,5 @@ onAuthStateChanged(auth, async (user) => {
     getAllCards();
     getAllMovimientos();
     getAllMovimientosGanar();
+    getAllUser();
 });

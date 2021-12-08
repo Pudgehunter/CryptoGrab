@@ -33,16 +33,16 @@ const logIn = async (email, password) => {
 const ingresarBtn = document.getElementById("logIn");
 
 ingresarBtn.addEventListener("submit", e => {
-    //e.preventDefault();
-    alert("Muchas gracias por su colaboración!!!");
-    // console.log("Funciono");
-    // const email = ingresarBtn.email.value;
-    // const password = ingresarBtn.password.value;
+    e.preventDefault();
+    //alert("Muchas gracias por su colaboración!!!");
+    console.log("Funciono");
+    const email = ingresarBtn.email.value;
+    const password = ingresarBtn.password.value;
 
-    // if (email && password) {
-    //     logIn(email, password);
-    // } else {
-    //     alert("completa todos los campos");
-    // }
+    if (email && password) {
+        logIn(email, password);
+    } else {
+        alert("completa todos los campos");
+    }
 }
 );

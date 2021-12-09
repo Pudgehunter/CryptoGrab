@@ -18,8 +18,8 @@ const logIn = async (email, password) => {
 
         alert("Gracias por Ingresar de nuevo!");
 
-        //window.location = "./onboarding.html";
-        window.location = "./home.html";
+        window.location = "./onboarding.html";
+        //window.location = "./home.html";
     } catch (e) {
         console.log(e);
         if (e.code === "auth/wrong-password") {

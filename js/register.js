@@ -21,8 +21,8 @@ const createUser = async (email, password, userFields) => {
 
         alert("Enhorabuena te registraste "+ email);
 
-        //window.location ="./onboarding.html";
-        window.location ="./home.html";
+        window.location ="./onboarding.html";
+        //window.location ="./home.html";
 
 
     }catch{
